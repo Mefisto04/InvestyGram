@@ -2,24 +2,62 @@ import mongoose, { Schema, Document } from "mongoose";
 import { z } from "zod";
 
 export interface IStartup extends Document {
+    startupId: string;
     name: string;
-    description: string;
-    industry: string;
-    founderId: mongoose.Types.ObjectId;
-    valuation: number;
-    stage: "idea" | "MVP" | "growth" | "scaling";
+    email: string;
+    password: string;
+    confirmPassword: string;
+    domain: string;
+    capital: number;
+    tagline: string;
+    companyImage: string;
+    pitchVideo: string;
+    socialProof: {
+        instagramFollowers: number;
+    };
+    fundingInfo: {
+        currentRound: string;
+        amountRaised: number;
+        targetAmount: number;
+    };
+    investorPrefs: {
+        minInvestment: number;
+        maxInvestment: number;
+        preferredIndustries: string[];
+        preferredStages: string[];
+    };
     createdAt: Date;
+    isVerified: boolean;
 }
 
 const StartupSchema = new Schema<IStartup>(
     {
+        startupId: { type: String, required: true, unique: true },
         name: { type: String, required: true },
-        description: { type: String, required: true },
-        industry: { type: String, required: true },
-        founderId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-        valuation: { type: Number, required: true },
-        stage: { type: String, enum: ["idea", "MVP", "growth", "scaling"], required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        confirmPassword: { type: String, required: true },
+        domain: { type: String, required: true },
+        capital: { type: Number, required: true },
+        tagline: { type: String, required: true },
+        companyImage: { type: String },
+        pitchVideo: { type: String },
+        socialProof: {
+            instagramFollowers: { type: Number, default: 0 }
+        },
+        fundingInfo: {
+            currentRound: { type: String, required: true },
+            amountRaised: { type: Number, default: 0 },
+            targetAmount: { type: Number, required: true }
+        },
+        investorPrefs: {
+            minInvestment: { type: Number, required: true },
+            maxInvestment: { type: Number, required: true },
+            preferredIndustries: [{ type: String }],
+            preferredStages: [{ type: String }]
+        },
         createdAt: { type: Date, default: Date.now },
+        isVerified: { type: Boolean, default: false }
     },
     { timestamps: true }
 );
@@ -28,10 +66,29 @@ export const Startup = mongoose.model<IStartup>("Startup", StartupSchema);
 
 // Zod Validation
 export const StartupValidation = z.object({
-    name: z.string().min(3),
-    description: z.string().min(10),
-    industry: z.string().min(2),
-    founderId: z.string(),
-    valuation: z.number().min(0),
-    stage: z.enum(["idea", "MVP", "growth", "scaling"]),
+    startupId: z.string(),
+    name: z.string().min(2),
+    email: z.string().email(),
+    password: z.string().min(6),
+    confirmPassword: z.string().min(6),
+    domain: z.string(),
+    capital: z.number(),
+    tagline: z.string(),
+    companyImage: z.string().optional(),
+    pitchVideo: z.string().optional(),
+    socialProof: z.object({
+        instagramFollowers: z.number()
+    }),
+    fundingInfo: z.object({
+        currentRound: z.string(),
+        amountRaised: z.number(),
+        targetAmount: z.number()
+    }),
+    investorPrefs: z.object({
+        minInvestment: z.number(),
+        maxInvestment: z.number(),
+        preferredIndustries: z.array(z.string()),
+        preferredStages: z.array(z.string())
+    }),
+    isVerified: z.boolean()
 });

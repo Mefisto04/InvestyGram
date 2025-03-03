@@ -6,7 +6,7 @@ export interface IUser extends Document {
     name: string;
     email: string;
     password: string;
-    role: "investor" | "startup";
+    confirmPassword: string;
     createdAt: Date;
 }
 
@@ -15,7 +15,7 @@ const UserSchema = new Schema<IUser>(
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
         password: { type: String, required: true },
-        role: { type: String, enum: ["investor", "startup"], required: true },
+        confirmPassword: { type: String, required: true },
         createdAt: { type: Date, default: Date.now },
     },
     { timestamps: true }
@@ -28,5 +28,5 @@ export const UserValidation = z.object({
     name: z.string().min(2),
     email: z.string().email(),
     password: z.string().min(6),
-    role: z.enum(["investor", "startup"]),
+    confirmPassword: z.string().min(6),
 });

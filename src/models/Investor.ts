@@ -2,22 +2,42 @@ import mongoose, { Schema, Document } from "mongoose";
 import { z } from "zod";
 
 export interface IInvestor extends Document {
-    userId: mongoose.Types.ObjectId;
-    firm: string;
-    investmentFocus: string[];
-    pastInvestments: string[];
-    availableCapital: number;
+    investorId: string;
+    name: string;
+    email: string;
+    password: string;
+    confirmPassword: string;
+    domain: string;
+    capital: number;
+    pastFunding: {
+        companyName: string;
+        amount: number;
+        year: number;
+    }[];
+    vision: string;
+    expertise: string[];
     createdAt: Date;
+    isVerified: boolean;
 }
 
 const InvestorSchema = new Schema<IInvestor>(
     {
-        userId: { type: Schema.Types.ObjectId, ref: "User", required: true },
-        firm: { type: String, required: true },
-        investmentFocus: [{ type: String, required: true }],
-        pastInvestments: [{ type: String, required: true }],
-        availableCapital: { type: Number, required: true },
+        investorId: { type: String, required: true, unique: true },
+        name: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        confirmPassword: { type: String, required: true },
+        domain: { type: String, required: true },
+        capital: { type: Number, required: true },
+        pastFunding: [{
+            companyName: { type: String, required: true },
+            amount: { type: Number, required: true },
+            year: { type: Number, required: true }
+        }],
+        vision: { type: String, required: true },
+        expertise: [{ type: String, required: true }],
         createdAt: { type: Date, default: Date.now },
+        isVerified: { type: Boolean, default: false }
     },
     { timestamps: true }
 );
@@ -26,9 +46,19 @@ export const Investor = mongoose.model<IInvestor>("Investor", InvestorSchema);
 
 // Zod Validation
 export const InvestorValidation = z.object({
-    userId: z.string(),
-    firm: z.string().min(2),
-    investmentFocus: z.array(z.string()),
-    pastInvestments: z.array(z.string()),
-    availableCapital: z.number().min(0),
+    investorId: z.string(),
+    name: z.string().min(2),
+    email: z.string().email(),
+    password: z.string().min(6),
+    confirmPassword: z.string().min(6),
+    domain: z.string(),
+    capital: z.number(),
+    pastFunding: z.array(z.object({
+        companyName: z.string(),
+        amount: z.number(),
+        year: z.number()
+    })),
+    vision: z.string(),
+    expertise: z.array(z.string()),
+    isVerified: z.boolean()
 });
