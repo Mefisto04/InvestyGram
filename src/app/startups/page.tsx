@@ -1,5 +1,6 @@
 "use client";
 
+import GetInvestor from "@/components/GetInvestor";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -17,6 +18,7 @@ export default function StartupPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
+      <GetInvestor/>
       <section className="container mx-auto px-4 py-20">
         <div className="text-center">
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">
