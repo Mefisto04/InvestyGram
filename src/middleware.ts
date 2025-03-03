@@ -3,6 +3,14 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(request: NextRequest) {
+    // Skip middleware for auth pages and API routes
+    if (
+        request.nextUrl.pathname.startsWith("/auth") ||
+        request.nextUrl.pathname.startsWith("/api/auth")
+    ) {
+        return NextResponse.next();
+    }
+
     const token = request.cookies.get("token")?.value;
 
     if (!token) {
@@ -19,5 +27,5 @@ export async function middleware(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/startups/:path*", "/investor/:path*"],
+    matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
 }; 
