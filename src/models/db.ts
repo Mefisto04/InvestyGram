@@ -1,21 +1,17 @@
 import mongoose from "mongoose";
 
-const MONGO_URI = process.env.MONGO_CONN || "";
+const MONGODB_URI = process.env.PUBLIC_MONGODB_URI || "mongodb://localhost:27017/investygram";
 
-const connectDB = async () => {
-    if (mongoose.connection.readyState >= 1) {
-        return;
-    }
-
+export async function connectDB() {
     try {
-        await mongoose.connect(MONGO_URI, {
-            dbName: "yourDatabaseName",
-        });
-        console.log("MongoDB Connected");
+        if (mongoose.connection.readyState === 1) {
+            return;
+        }
+
+        await mongoose.connect(MONGODB_URI);
+        console.log("Connected to MongoDB");
     } catch (error) {
         console.error("MongoDB connection error:", error);
-        throw new Error("Database connection failed");
+        throw error;
     }
-};
-
-export default connectDB;
+}
