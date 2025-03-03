@@ -3,11 +3,13 @@
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { ArrowRight, Building2, Handshake, LineChart, Search } from "lucide-react";
+import GetInvestor from "@/components/GetInvestor"
 
 export default function InvestorPage() {
   return (
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
+      {/* //<GetInvestor/> */}
       <section className="container mx-auto px-4 py-20">
         <div className="text-center">
           <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">

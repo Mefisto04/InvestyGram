@@ -45,7 +45,8 @@ export default function LoginPage() {
       }
 
       toast.success("Login successful!");
-      router.push(userType === "startup" ? "/startups" : "/investor");
+      //router.push(userType === "startup" ? "/startups" : "/investor");
+      router.push("/startups")
     } catch (error) {
       toast.error("Login failed. Please try again.");
     } finally {
