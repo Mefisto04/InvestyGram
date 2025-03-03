@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Document } from "mongoose";
 import { z } from "zod";
 
 export interface IStartup extends Document {
@@ -29,40 +29,6 @@ export interface IStartup extends Document {
     createdAt: Date;
     isVerified: boolean;
 }
-
-const StartupSchema = new Schema<IStartup>(
-    {
-        startupId: { type: String, required: true, unique: true },
-        name: { type: String, required: true },
-        email: { type: String, required: true, unique: true },
-        password: { type: String, required: true },
-        confirmPassword: { type: String, required: true },
-        domain: { type: String, required: true },
-        capital: { type: Number, required: true },
-        tagline: { type: String, required: true },
-        companyImage: { type: String },
-        pitchVideo: { type: String },
-        socialProof: {
-            instagramFollowers: { type: Number, default: 0 }
-        },
-        fundingInfo: {
-            currentRound: { type: String, required: true },
-            amountRaised: { type: Number, default: 0 },
-            targetAmount: { type: Number, required: true }
-        },
-        investorPrefs: {
-            minInvestment: { type: Number, required: true },
-            maxInvestment: { type: Number, required: true },
-            preferredIndustries: [{ type: String }],
-            preferredStages: [{ type: String }]
-        },
-        createdAt: { type: Date, default: Date.now },
-        isVerified: { type: Boolean, default: false }
-    },
-    { timestamps: true }
-);
-
-export const Startup = mongoose.model<IStartup>("Startup", StartupSchema);
 
 // Zod Validation
 export const StartupValidation = z.object({
