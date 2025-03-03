@@ -42,7 +42,7 @@ export default function InvestorsPage() {
     const fetchInvestors = async () => {
       try {
         setLoading(true);
-        const response = await fetch('/api/investors');
+        const response = await fetch('/api/auth/get-investor');
         const data = await response.json();
         
         if (!data.success) {
