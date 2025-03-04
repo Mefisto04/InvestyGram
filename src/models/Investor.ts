@@ -42,7 +42,8 @@ const InvestorSchema = new Schema<IInvestor>(
     { timestamps: true }
 );
 
-export const Investor = mongoose.model<IInvestor>("Investor", InvestorSchema);
+// ✅ Prevent OverwriteModelError
+export const Investor = mongoose.models.Investor || mongoose.model<IInvestor>("Investor", InvestorSchema);
 
 // Zod Validation
 export const InvestorValidation = z.object({
