@@ -12,7 +12,7 @@ export interface IBid extends Document {
     createdAt: Date;
 }
 
-const BidSchema = new Schema<IBid>(
+export const BidSchema = new Schema<IBid>(
     {
         startupId: { type: String, required: true, ref: 'Startup' },
         investorId: { type: String, required: true, ref: 'Investor' },
@@ -30,7 +30,7 @@ const BidSchema = new Schema<IBid>(
     { timestamps: true }
 );
 
-export const Bid = mongoose.model<IBid>("Bid", BidSchema);
+// export const Bid = mongoose.model<IBid>("Bid", BidSchema);
 
 // Zod Validation
 export const BidValidation = z.object({
