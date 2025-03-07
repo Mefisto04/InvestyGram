@@ -60,7 +60,7 @@ export async function POST(request: Request) {
       });
     } catch (blobError: any) {
       console.error("Vercel Blob error:", blobError);
-      
+
       // For development, return a fallback
       return NextResponse.json({
         url: `https://placeholder.co/400x300?text=${encodeURIComponent(file.name)}`,

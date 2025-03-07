@@ -13,7 +13,11 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 
 interface StartupData {
-  companyImage: string;
+  companyImage: {
+    url: string;
+    fileType: string;
+    originalName: string;
+  };
   name: string;
   tagline: string;
   fundingInfo: {
@@ -79,10 +83,7 @@ export function StartupsReel() {
       transition={{ duration: 0.5 }}
     >
       {startups.map((startup, index) => (
-        <section
-          key={index}
-          className="h-full w-md snap-start snap-always p-4"
-        >
+        <section key={index} className="h-full w-md snap-start snap-always p-4">
           <Card
             className={`h-full w-full overflow-hidden relative ${
               gradientClasses[index % gradientClasses.length]
@@ -98,7 +99,7 @@ export function StartupsReel() {
             <CardContent className="h-[60vh] flex flex-col gap-4">
               <div className="relative h-48 w-full rounded-xl overflow-hidden">
                 <img
-                  src={startup.companyImage || "/placeholder-startup.jpg"}
+                  src={startup.companyImage?.url || ""}
                   alt={startup.name}
                   className="object-cover w-full h-full"
                 />

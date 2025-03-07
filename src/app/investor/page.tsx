@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ChevronRight, Search, FileText, CreditCard } from "lucide-react";
@@ -7,8 +8,10 @@ import { Button } from "@/components/ui/button";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { StartupsReel } from "@/components/StartupsReel";
+import { useRouter } from "next/navigation";
 
 const InvestorTutorialSection = () => {
+  const router = useRouter();
   return (
     <>
       <Navbar />
@@ -76,19 +79,16 @@ const InvestorTutorialSection = () => {
           </div>
 
           <div className="mt-12 text-center">
-            <Link href="/discover">
-              <Button className="group">
+            <Link href="/investor/discover">
+              <Button className="group" onClick={() => {
+                router.push('/investor/discover');
+              }}>
                 Start Investing Now
                 <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </div>
-          <div className="h-screen bg-background">
-            <h1 className="text-4xl font-bold text-center pt-8 pb-4 bg-gradient-to-r from-primary to-purple-600 bg-clip-text text-transparent">
-              Investment Reels
-            </h1>
-            <StartupsReel />
-          </div>
+          
         </div>
       </section>
       <Footer />
