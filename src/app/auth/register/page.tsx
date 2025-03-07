@@ -16,6 +16,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
+import Navbar from "@/components/Navbar";
 
 export default function RegisterPage() {
   const router = useRouter();
@@ -69,6 +70,8 @@ export default function RegisterPage() {
   };
 
   return (
+    <>
+  <Navbar/>
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
       <Card className="w-[400px]">
         <CardHeader>
@@ -209,5 +212,6 @@ export default function RegisterPage() {
         </form>
       </Card>
     </div>
+    </>
   );
 }
