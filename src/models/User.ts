@@ -10,7 +10,7 @@ export interface IUser extends Document {
     createdAt: Date;
 }
 
-const UserSchema = new Schema<IUser>(
+export const UserSchema = new Schema<IUser>(
     {
         name: { type: String, required: true },
         email: { type: String, required: true, unique: true },
@@ -21,7 +21,7 @@ const UserSchema = new Schema<IUser>(
     { timestamps: true }
 );
 
-export const User = mongoose.model<IUser>("User", UserSchema);
+// export const User = mongoose.model<IUser>("User", UserSchema);
 
 // Zod Validation
 export const UserValidation = z.object({

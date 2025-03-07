@@ -1,4 +1,4 @@
-import mongoose, { Schema, Document } from "mongoose";
+import { Schema, Document } from "mongoose";
 import { z } from "zod";
 
 export interface IInvestor extends Document {
@@ -20,7 +20,7 @@ export interface IInvestor extends Document {
     isVerified: boolean;
 }
 
-const InvestorSchema = new Schema<IInvestor>(
+export const InvestorSchema = new Schema<IInvestor>(
     {
         investorId: { type: String, required: true, unique: true },
         name: { type: String, required: true },
@@ -42,10 +42,7 @@ const InvestorSchema = new Schema<IInvestor>(
     { timestamps: true }
 );
 
-// ✅ Prevent OverwriteModelError
-export const Investor = mongoose.models.Investor || mongoose.model<IInvestor>("Investor", InvestorSchema);
-
-// Zod Validation
+// Zod Validation Only - Remove model definition here
 export const InvestorValidation = z.object({
     investorId: z.string(),
     name: z.string().min(2),
