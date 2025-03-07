@@ -27,6 +27,14 @@ export async function POST(request: Request) {
             );
         }
 
+        // Validate userType
+        if (!["startup", "investor"].includes(userType)) {
+            return NextResponse.json(
+                { error: "Invalid user type" },
+                { status: 400 }
+            );
+        }
+
         await connectDB();
 
         // Check if user already exists
@@ -57,6 +65,9 @@ export async function POST(request: Request) {
                     );
                 }
 
+                // Extract nested objects from the form data
+                const { socialProof, fundingInfo, investorPrefs } = rest;
+
                 user = await Startup.create({
                     name: rest.name,
                     email,
@@ -66,22 +77,25 @@ export async function POST(request: Request) {
                     capital: Number(rest.capital),
                     tagline: rest.tagline,
                     startupId: `ST${Date.now()}`,
+                    companyImage: rest.companyImage || "",
+                    pitchVideo: rest.pitchVideo || "",
                     socialProof: {
-                        instagramFollowers: 0
+                        instagramFollowers: socialProof?.instagramFollowers || 0
                     },
                     fundingInfo: {
-                        currentRound: "Seed",
-                        amountRaised: 0,
-                        targetAmount: Number(rest.capital)
+                        currentRound: fundingInfo?.currentRound || "Seed",
+                        amountRaised: fundingInfo?.amountRaised || 0,
+                        targetAmount: fundingInfo?.targetAmount || Number(rest.capital)
                     },
                     investorPrefs: {
-                        minInvestment: 0,
-                        maxInvestment: Number(rest.capital),
-                        preferredIndustries: [],
-                        preferredStages: []
-                    }
+                        minInvestment: investorPrefs?.minInvestment || 0,
+                        maxInvestment: investorPrefs?.maxInvestment || Number(rest.capital),
+                        preferredIndustries: investorPrefs?.preferredIndustries || [],
+                        preferredStages: investorPrefs?.preferredStages || []
+                    },
+                    isVerified: false
                 });
-            } else {
+            } else if (userType === "investor") {
                 // Validate investor-specific fields
                 if (!rest.name || !rest.domain || !rest.capital || !rest.vision || !rest.expertise) {
                     return NextResponse.json(
@@ -89,6 +103,14 @@ export async function POST(request: Request) {
                         { status: 400 }
                     );
                 }
+
+                // Process pastFunding data
+                const pastFunding = Array.isArray(rest.pastFunding) ? rest.pastFunding : [];
+                
+                // Filter out incomplete entries
+                const validPastFunding = pastFunding.filter(
+                    (item: any) => item.companyName && item.amount && item.year
+                );
 
                 user = await Investor.create({
                     name: rest.name,
@@ -100,8 +122,14 @@ export async function POST(request: Request) {
                     vision: rest.vision,
                     expertise: Array.isArray(rest.expertise) ? rest.expertise : rest.expertise.split(",").map((s: string) => s.trim()),
                     investorId: `IN${Date.now()}`,
-                    pastFunding: []
+                    pastFunding: validPastFunding,
+                    isVerified: false
                 });
+            } else {
+                return NextResponse.json(
+                    { error: "Invalid user type" },
+                    { status: 400 }
+                );
             }
         } catch (createError) {
             console.error("Error creating user:", createError);
