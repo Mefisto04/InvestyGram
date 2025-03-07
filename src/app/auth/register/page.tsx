@@ -25,11 +25,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
+import { CloudUpload, X } from "lucide-react";
+import Image from "next/image";
+import config from "@/lib/config";
 
 export default function RegisterPage() {
   const router = useRouter();
   const [userType, setUserType] = useState<"startup" | "investor">("startup");
   const [loading, setLoading] = useState(false);
+  const [uploadingImage, setUploadingImage] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -40,7 +44,11 @@ export default function RegisterPage() {
     domain: "",
     capital: 0,
     tagline: "",
-    companyImage: "",
+    companyImage: {
+      url: "",
+      fileType: "",
+      originalName: ""
+    },
     pitchVideo: "",
     socialProof: {
       instagramFollowers: 0,
@@ -154,6 +162,66 @@ export default function RegisterPage() {
         [name]: Number(value),
       });
     }
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    
+    // Check file size
+    if (file.size > config.maxImageSize) {
+      toast.error(`File size exceeds the maximum allowed size of ${config.maxImageSize / (1024 * 1024)}MB`);
+      return;
+    }
+    
+    try {
+      setUploadingImage(true);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      console.log(`Using upload endpoint: ${config.uploadEndpoint}`);
+      const response = await fetch(config.uploadEndpoint, {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Upload failed');
+      }
+      
+      const result = await response.json();
+      
+      setFormData(prev => ({
+        ...prev,
+        companyImage: {
+          url: result.url,
+          fileType: result.fileType,
+          originalName: result.originalName
+        }
+      }));
+      
+      toast.success('Image uploaded successfully!');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to upload image');
+      console.error('Upload error:', error);
+    } finally {
+      setUploadingImage(false);
+    }
+  };
+
+  const handleRemoveImage = () => {
+    setFormData(prev => ({
+      ...prev,
+      companyImage: {
+        url: "",
+        fileType: "",
+        originalName: ""
+      }
+    }));
   };
 
   const handleNext = (e: React.FormEvent) => {
@@ -377,15 +445,58 @@ export default function RegisterPage() {
                   />
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="companyImage">Company Image URL</Label>
-                  <Input
-                    id="companyImage"
-                    name="companyImage"
-                    type="text"
-                    placeholder="Enter company image URL"
-                    value={formData.companyImage}
-                    onChange={handleInputChange}
-                  />
+                  <Label htmlFor="companyImage">Company Image</Label>
+                  <div className="mt-2">
+                    {formData.companyImage.url ? (
+                      <div className="relative w-full h-40 bg-gray-100 rounded-md overflow-hidden">
+                        {formData.companyImage.url.startsWith('data:') ? (
+                          <div 
+                            className="w-full h-full bg-contain bg-center bg-no-repeat" 
+                            style={{ backgroundImage: `url(${formData.companyImage.url})` }}
+                          />
+                        ) : (
+                          <Image 
+                            src={formData.companyImage.url} 
+                            alt="Company Image" 
+                            fill 
+                            className="object-cover"
+                          />
+                        )}
+                        <button 
+                          type="button"
+                          onClick={handleRemoveImage}
+                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                        >
+                          <X size={16} />
+                        </button>
+                        <p className="absolute bottom-2 left-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                          {formData.companyImage.originalName}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
+                        <CloudUpload className="h-10 w-10 text-gray-400" />
+                        <label 
+                          htmlFor="company-image-upload"
+                          className="mt-2 cursor-pointer text-center"
+                        >
+                          <span className="mt-2 block text-sm font-medium text-gray-700">
+                            {uploadingImage ? "Uploading..." : "Click to upload company image"}
+                          </span>
+                          <input
+                            id="company-image-upload"
+                            name="company-image-upload"
+                            type="file"
+                            accept="image/*"
+                            className="sr-only"
+                            onChange={handleFileUpload}
+                            disabled={uploadingImage}
+                          />
+                          <p className="text-xs text-gray-500">PNG, JPG, GIF up to 10MB</p>
+                        </label>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="pitchVideo">Pitch Video URL</Label>

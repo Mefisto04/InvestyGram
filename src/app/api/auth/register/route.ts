@@ -66,7 +66,7 @@ export async function POST(request: Request) {
                 }
 
                 // Extract nested objects from the form data
-                const { socialProof, fundingInfo, investorPrefs } = rest;
+                const { socialProof, fundingInfo, investorPrefs, companyImage } = rest;
 
                 user = await Startup.create({
                     name: rest.name,
@@ -77,7 +77,11 @@ export async function POST(request: Request) {
                     capital: Number(rest.capital),
                     tagline: rest.tagline,
                     startupId: `ST${Date.now()}`,
-                    companyImage: rest.companyImage || "",
+                    companyImage: {
+                        url: companyImage?.url || "",
+                        fileType: companyImage?.fileType || "",
+                        originalName: companyImage?.originalName || ""
+                    },
                     pitchVideo: rest.pitchVideo || "",
                     socialProof: {
                         instagramFollowers: socialProof?.instagramFollowers || 0
