@@ -45,8 +45,8 @@ export async function POST(
 
       // 2. Reject all other pending bids for this startup
       await Bid.updateMany(
-        { 
-          startupId, 
+        {
+          startupId,
           _id: { $ne: bidId },
           status: "pending"
         },
@@ -56,16 +56,16 @@ export async function POST(
 
       // 3. Update the investor's record
       const startup = await Startup.findOne({ startupId }).session(session);
-      
+
       await Investor.findOneAndUpdate(
         { investorId: bid.investorId },
-        { 
-          $push: { 
+        {
+          $push: {
             pastFunding: {
               companyName: startup?.name || "Unknown Startup",
               amount: bid.amount,
               year: new Date().getFullYear()
-            } 
+            }
           }
         },
         { session }
@@ -75,8 +75,8 @@ export async function POST(
       await session.commitTransaction();
       session.endSession();
 
-      return NextResponse.json({ 
-        message: "Bid accepted successfully" 
+      return NextResponse.json({
+        message: "Bid accepted successfully"
       }, { status: 200 });
     } catch (error) {
       // If anything fails, abort the transaction
@@ -91,4 +91,4 @@ export async function POST(
       { status: 500 }
     );
   }
-} 
+}
