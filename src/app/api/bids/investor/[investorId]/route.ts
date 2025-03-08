@@ -5,11 +5,11 @@ import { Startup } from "@/models";
 
 export async function GET(
   request: Request,
-  { params }: { params: { investorId: string } }
+  { params }: { params: Promise<{ investorId: string }> }
 ) {
   try {
     await connectDB();
-    const investorId = params.investorId;
+    const investorId = await params;
 
     // Find all bids for this investor
     const bids = await Bid.find({ investorId }).sort({ updatedAt: -1 });
@@ -19,7 +19,7 @@ export async function GET(
       bids.map(async (bid) => {
         const startup = await Startup.findOne({ startupId: bid.startupId })
           .select("name");
-        
+
         return {
           ...bid.toObject(),
           startupName: startup?.name || "Unknown Startup"

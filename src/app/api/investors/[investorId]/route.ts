@@ -5,11 +5,11 @@ import { Investor } from "@/models";
 
 export async function GET(
   request: Request,
-  { params }: { params: { investorId: string } }
+  { params }: { params: Promise<{ investorId: string }> }
 ) {
   try {
     await connectDB();
-    const investorId = params.investorId;
+    const investorId = await params;
 
     const investor = await Investor.findOne({ investorId }).select(
       "name email domain capital expertise vision pastFunding"

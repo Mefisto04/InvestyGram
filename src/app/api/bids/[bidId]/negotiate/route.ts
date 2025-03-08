@@ -4,11 +4,11 @@ import { Bid } from "@/models/Bid";
 
 export async function POST(
   request: Request,
-  { params }: { params: { bidId: string } }
+  { params }: { params: Promise<{ bidId: string }> }
 ) {
   try {
     await connectDB();
-    const bidId = params.bidId;
+    const { bidId } = await params;
     const { startupId, message } = await request.json();
 
     // Check if the bid exists
@@ -32,12 +32,12 @@ export async function POST(
     // 1. Store the negotiation message in a messages collection
     // 2. Create a notification for the investor
     // 3. Possibly update the bid status to "in_negotiation"
-    
+
     // For this example, we'll just add a comment to the bid
     await Bid.findByIdAndUpdate(
       bidId,
-      { 
-        $push: { 
+      {
+        $push: {
           negotiations: {
             message,
             sentBy: "startup",

@@ -5,11 +5,11 @@ import { Startup } from "@/models";
 
 export async function GET(
   request: Request,
-  { params }: { params: { investorId: string } }
+  { params }: { params: Promise<{ investorId: string }> }
 ) {
   try {
     await connectDB();
-    const investorId = params.investorId;
+    const investorId = await params;
 
     // Find all rejected bids for this investor
     const bids = await Bid.find({ 

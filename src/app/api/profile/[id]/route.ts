@@ -1,21 +1,21 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/models/db";
-import {Startup} from "@/models";
-import {Investor} from "@/models";
+import { Startup } from "@/models";
+import { Investor } from "@/models";
 
 export async function GET(
   request: Request,
-  { params }: { params: { id: string } }
+  { params }: { params: Promise<{ id: string }> }
 ) {
   try {
-    const id = params.id;
-    
+    const id = await params;
+
     // Connect to database
     await connectDB();
 
     // Try to find startup first
     let profile = await Startup.findOne({ startupId: id }).select("-password -confirmPassword");
-    
+
     // If no startup found, try to find investor
     if (!profile) {
       profile = await Investor.findOne({ investorId: id }).select("-password -confirmPassword");

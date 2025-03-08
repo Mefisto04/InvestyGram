@@ -4,11 +4,11 @@ import { Bid } from "@/models/Bid";
 
 export async function POST(
   request: Request,
-  { params }: { params: { bidId: string } }
+  { params }: { params: Promise<{ bidId: string }> }
 ) {
   try {
     await connectDB();
-    const bidId = params.bidId;
+    const { bidId } = await params;
     const { startupId } = await request.json();
 
     // Check if the bid exists
