@@ -103,6 +103,11 @@ const Footer = () => {
                     Status
                   </Link>
                 </li>
+                <li>
+                  <Link href="/auth/adminLogin" className="hover:text-foreground transition-colors">
+                    Admin Login
+                  </Link>
+                </li>
               </ul>
             </div>
           </div>

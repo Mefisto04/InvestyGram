@@ -14,7 +14,6 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { motion, useAnimation, PanInfo } from "framer-motion";
 import { MatchMeter } from "@/components/MatchMeter";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 interface MatchScores {
   visionAlignment: { score: number; reason: string };
@@ -51,12 +50,11 @@ interface StartupData {
   matchScores?: MatchScores;
 }
 
-
 const gradientClasses = [
-  "bg-gradient-to-br from-primary/90 to-purple-200",
-  "bg-gradient-to-br from-primary/90 to-purple-200",
-  "bg-gradient-to-br from-primary/90 to-purple-200",
-  "bg-gradient-to-br from-primary/90 to-purple-200",
+  "bg-gradient-to-br from-blue-500/20 to-purple-500/20",
+  "bg-gradient-to-br from-green-500/20 to-cyan-500/20",
+  "bg-gradient-to-br from-orange-500/20 to-red-500/20",
+  "bg-gradient-to-br from-pink-500/20 to-purple-500/20",
 ];
 
 export function StartupsReel() {
@@ -70,18 +68,25 @@ export function StartupsReel() {
       try {
         setLoading(true);
         const investorId = localStorage.getItem("InvestorId");
+        console.log("Client ID from storage:", investorId); // Add this line
+
         if (!investorId) throw new Error("Investor not logged in");
 
+        // Fetch all startups
         const startupsRes = await fetch("/api/startups");
         const startupsData = await startupsRes.json();
+
         if (!startupsData.success || !startupsData.data?.length) {
           throw new Error("Failed to fetch startups");
         }
 
+        // Extract startupIds from the response
         const startupIds = startupsData.data.map(
           (s: StartupData) => s.startupId
         );
 
+
+        // Get match scores
         const scoresRes = await fetch("/api/match-score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -93,6 +98,7 @@ export function StartupsReel() {
           throw new Error("Failed to fetch match scores");
         }
 
+        // Merge scores with startup data
         const mergedData = startupsData.data.map((startup: StartupData) => ({
           ...startup,
           matchScores: scoresData.data.find(
@@ -111,12 +117,30 @@ export function StartupsReel() {
     fetchData();
   }, []);
 
+  // useEffect(() => {
+  //   const fetchStartups = async () => {
+  //     try {
+  //       const response = await fetch("/api/startups");
+  //       const data = await response.json();
+  //       if (data.success) {
+  //         setStartups(data.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching startups:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
+
+  //   fetchStartups();
+  // }, []);
+
   if (loading) {
     return (
-      <div className="h-screen snap-y snap-mandatory overflow-y-scroll bg-gradient-to-br from-primary/90 to-purple-600">
+      <div className="h-screen snap-y snap-mandatory overflow-y-scroll">
         {[...Array(4)].map((_, i) => (
           <div key={i} className="h-screen w-screen snap-start snap-always p-4">
-            <Skeleton className="h-full w-full rounded-xl bg-black/20" />
+            <Skeleton className="h-full w-full rounded-xl" />
           </div>
         ))}
       </div>
@@ -125,7 +149,7 @@ export function StartupsReel() {
 
   return (
     <motion.div
-      className="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide bg-gradient-to-br from-primary/90 to-purple-600"
+      className="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -134,13 +158,11 @@ export function StartupsReel() {
         <section key={index} className="h-full w-xl snap-start snap-always p-4">
           <Card
             className={`h-full w-full overflow-hidden relative ${gradientClasses[index % gradientClasses.length]
-              } border-2 border-white/20 group hover:border-white/40 bg-black/30 hover:bg-black/40 shadow-xl shadow-black/30 hover:shadow-2xl hover:shadow-black/50 transition-all duration-500 backdrop-blur-lg`}
+              }`}
           >
             <CardHeader className="pb-2">
-              <CardTitle className="text-3xl text-white drop-shadow-md">
-                {startup.name}
-              </CardTitle>
-              <CardDescription className="text-lg text-white/80">
+              <CardTitle className="text-3xl">{startup.name}</CardTitle>
+              <CardDescription className="text-lg">
                 {startup.tagline}
               </CardDescription>
             </CardHeader>
@@ -154,6 +176,7 @@ export function StartupsReel() {
                   className="w-full h-full"
                 >
                   {showPitchVideo[startup.startupId] ? (
+                    // Show pitch video when button is clicked
                     startup.pitchVideo?.url ? (
                       <div className="relative w-full h-full">
                         <video
@@ -165,6 +188,7 @@ export function StartupsReel() {
                         <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-xs">
                           Pitch Video
                         </div>
+                        {/* Button to go back to company image */}
                         <button
                           onClick={() => setShowPitchVideo(prev => ({
                             ...prev,
@@ -182,6 +206,7 @@ export function StartupsReel() {
                     ) : (
                       <div className="flex items-center justify-center h-full bg-gray-200">
                         <p className="text-gray-500">No pitch video available</p>
+                        {/* Button to go back to company image */}
                         <button
                           onClick={() => setShowPitchVideo(prev => ({
                             ...prev,
@@ -198,7 +223,13 @@ export function StartupsReel() {
                       </div>
                     )
                   ) : (
+                    // Show company image by default
                     <>
+                      {/* <img
+                        src={startup.companyImage?.url || ""}
+                        alt={startup.name}
+                        className="object-cover w-full h-full"
+                      /> */}
                       {startup.companyImage?.url ? (
                         <img
                           src={startup.companyImage.url}
@@ -208,7 +239,7 @@ export function StartupsReel() {
                       ) : null}
                       <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2">
                         <div className="flex justify-between text-white text-sm">
-                          <span>🏷️ {startup.fundingInfo.currentRound}</span>
+                          <span>🏷 {startup.fundingInfo.currentRound}</span>
                           <span>
                             📸{" "}
                             {startup.socialProof.instagramFollowers.toLocaleString()}{" "}
@@ -216,6 +247,7 @@ export function StartupsReel() {
                           </span>
                         </div>
                       </div>
+                      {/* Button to show pitch video */}
                       <button
                         onClick={() => setShowPitchVideo(prev => ({
                           ...prev,
@@ -236,7 +268,7 @@ export function StartupsReel() {
 
               <div className="space-y-2 flex-grow">
                 <div className="space-y-1">
-                  <div className="flex justify-between font-medium text-white">
+                  <div className="flex justify-between font-medium">
                     <span>Raised</span>
                     <span>Target</span>
                   </div>
@@ -246,9 +278,9 @@ export function StartupsReel() {
                         startup.fundingInfo.targetAmount) *
                       100
                     }
-                    className="h-3 bg-white/20"
+                    className="h-3 bg-gray-200"
                   />
-                  <div className="flex justify-between text-sm text-white/80">
+                  <div className="flex justify-between text-sm">
                     <span>
                       ${startup.fundingInfo.amountRaised.toLocaleString()}
                     </span>
@@ -258,17 +290,17 @@ export function StartupsReel() {
                   </div>
                 </div>
 
-                <div className="mt-4 p-4 bg-black/20 rounded-lg">
+                <div className="mt-4 p-4 bg-background/50 rounded-lg">
                   <div className="flex justify-between items-center">
                     <div>
-                      <h3 className="font-semibold text-white">Minimum Investment</h3>
+                      <h3 className="font-semibold">Minimum Investment</h3>
                       <p className="text-2xl font-bold text-primary">
                         ${startup.investorPrefs.minInvestment.toLocaleString()}
                       </p>
                     </div>
                     <div className="text-right">
-                      <h3 className="font-semibold text-white">Preferred Industries</h3>
-                      <p className="text-sm text-white/80">
+                      <h3 className="font-semibold">Preferred Industries</h3>
+                      <p className="text-sm text-muted-foreground">
                         {startup.investorPrefs.preferredIndustries.join(", ")}
                       </p>
                     </div>
@@ -294,7 +326,7 @@ export function StartupsReel() {
                 )}
               </div>
               {startup.matchScores && (
-                <div className="text-sm text-white/80 space-y-2">
+                <div className="text-sm text-muted-foreground space-y-2">
                   <p>💡 {startup.matchScores.visionAlignment.reason}</p>
                   <p>🎯 {startup.matchScores.domainMatch.reason}</p>
                   <p>📈 {startup.matchScores.growthPotential.reason}</p>
@@ -302,18 +334,18 @@ export function StartupsReel() {
               )}
               <div className="text-center">
                 <Button 
-                  className="group bg-white text-primary hover:bg-white/90 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 backdrop-blur-sm"
+                  className="group" 
                   onClick={() => {
                     router.push(`/investor/discover/${startup.startupId}`);
                   }}
                 >
-                  <span className="relative z-10">View Detailed Report</span>
+                  View Detailed Report
                 </Button>
               </div>
             </CardContent>
 
-            <CardFooter className="absolute bottom-0 w-full bg-black/80 border-t border-white/20">
-              <div className="w-full flex justify-center items-center py-2 text-sm text-white/80">
+            <CardFooter className="absolute bottom-0 w-full bg-background/80 border-t">
+              <div className="w-full flex justify-center items-center py-2 text-sm text-muted-foreground">
                 {showPitchVideo[startup.startupId] ? (
                   <span>Viewing pitch video</span>
                 ) : (

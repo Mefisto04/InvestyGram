@@ -428,69 +428,85 @@ const LandingPage = () => {
   </div>
 </section>
       {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4">
-              Success Stories
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">What Our Community Says</h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join successful startups and investors who found perfect matches through our platform.
-            </p>
-          </div>
+      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/10 to-purple-600/10 relative overflow-hidden">
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <Badge
+        variant="outline"
+        className="mb-4 bg-primary/10 border-primary/30 text-primary transition-all duration-300 hover:bg-primary/20 backdrop-blur-md"
+      >
+        Success Stories
+      </Badge>
+      <h2 className="text-3xl md:text-4xl font-bold text-gray-900 drop-shadow-md">
+        What Our Community Says
+      </h2>
+      <p className="mt-4 text-lg text-gray-600 max-w-2xl mx-auto">
+        Join successful startups and investors who found perfect matches through our platform.
+      </p>
+    </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                name: "Rahul Verma",
-                role: "Startup Founder",
-                review:
-                  "The AI matching connected us with ideal investors in 72 hours. We secured 1.8Cr funding at better terms than expected!",
-                avatar: "/placeholder.svg?height=100&width=100",
-              },
-              {
-                name: "Priya Khanna",
-                role: "Angel Investor",
-                review:
-                  "Found 3 high-potential startups in my niche this quarter. The live deal feature makes due diligence and negotiations seamless.",
-                avatar: "/placeholder.svg?height=100&width=100",
-              },
-              {
-                name: "Arjun Mehta",
-                role: "Venture Partner",
-                review:
-                  "Our fund deployed ₹25Cr through this platform. The escrow security and ROI tracking features give us complete confidence.",
-                avatar: "/placeholder.svg?height=100&width=100",
-              },
-            ].map((testimonial, index) => (
-              <Card key={index} className="border bg-muted/30">
-                <CardContent className="pt-6">
-                  <div className="flex items-center gap-2 mb-1">
-                    {[1, 2, 3, 4, 5].map((star) => (
-                      <Star key={star} className="h-4 w-4 fill-primary text-primary" />
-                    ))}
-                  </div>
-                  <p className="mt-4 text-muted-foreground italic">"{testimonial.review}"</p>
-                  <div className="mt-6 flex items-center">
-                    <Image
-                      src={testimonial.avatar || "/placeholder.svg"}
-                      alt={testimonial.name}
-                      width={48}
-                      height={48}
-                      className="rounded-full mr-4"
-                    />
-                    <div>
-                      <h4 className="font-medium">{testimonial.name}</h4>
-                      <p className="text-sm text-muted-foreground">{testimonial.role}</p>
-                    </div>
-                  </div>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          name: "Rahul Verma",
+          role: "Startup Founder",
+          review:
+            "The AI matching connected us with ideal investors in 72 hours. We secured 1.8Cr funding at better terms than expected!",
+          avatar: "/user1.png",
+        },
+        {
+          name: "Priya Khanna",
+          role: "Angel Investor",
+          review:
+            "Found 3 high-potential startups in my niche this quarter. The live deal feature makes due diligence and negotiations seamless.",
+          avatar: "/user3.png",
+        },
+        {
+          name: "Arjun Mehta",
+          role: "Venture Partner",
+          review:
+            "Our fund deployed ₹25Cr through this platform. The security & ROI tracking features give us complete confidence.",
+          avatar: "/user2.png",
+        },
+      ].map((testimonial, index) => (
+        <motion.div
+          key={index}
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5, delay: index * 0.1 }}
+          viewport={{ once: true }}
+        >
+          <Card className="border-2 border-primary/20 group hover:border-primary/40 bg-white shadow-xl shadow-primary/30 hover:shadow-2xl hover:shadow-primary/50 transition-all duration-500 backdrop-blur-lg overflow-hidden relative h-full">
+            <div className="absolute inset-0 bg-gradient-to-br from-primary/90 to-purple-600 opacity-0 group-hover:opacity-20 transition-opacity duration-500"></div>
+            <CardContent className="pt-6 relative z-10">
+              <div className="flex items-center gap-2 mb-1">
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <Star key={star} className="h-4 w-4 fill-primary text-primary" />
+                ))}
+              </div>
+              <p className="mt-4 text-gray-600 group-hover:text-gray-900 transition-colors duration-300 italic">
+                "{testimonial.review}"
+              </p>
+              <div className="mt-6 flex items-center">
+                <Image
+                  src={testimonial.avatar || "/placeholder.svg"}
+                  alt={testimonial.name}
+                  width={48}
+                  height={48}
+                  className="rounded-full mr-4"
+                />
+                <div>
+                  <h4 className="font-medium text-gray-900">{testimonial.name}</h4>
+                  <p className="text-sm text-gray-600">{testimonial.role}</p>
+                </div>
+              </div>
+            </CardContent>
+          </Card>
+        </motion.div>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary text-primary-foreground">

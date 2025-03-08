@@ -4,7 +4,7 @@ import { Startup } from '@/models';
 
 export async function GET() {
     try {
-        const startups = await Startup.find({ isVerified: false })
+        const startups = await Startup.find({ isVerified: true })
             .select('-password -confirmPassword')
             .lean();
 
