@@ -34,6 +34,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { Badge } from "@/components/ui/badge"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import ChatBot from "@/components/ChatBot"
 
 const LandingPage = () => {
   const [isScrolled, setIsScrolled] = useState(false)
@@ -555,6 +556,7 @@ const LandingPage = () => {
 
       {/* Footer */}
       <Footer />
+      <ChatBot />
     </div>
   )
 }
