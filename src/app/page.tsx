@@ -77,7 +77,7 @@ const LandingPage = () => {
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Link href="/auth/register">
                   <Button size="lg" className="bg-white text-primary hover:bg-white/90 w-full sm:w-auto">
-                    Get Started Free
+                    Get Started
                   </Button>
                 </Link>
                 <Link href="#how-it-works">
@@ -315,102 +315,102 @@ const LandingPage = () => {
 
       {/* Features */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <Badge variant="outline" className="mb-4">
-        Powerful Features
-      </Badge>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground">Everything Startups & Investors Need</h2>
-      <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-        Connect startups with investors through smart matching, secure deals, and real-time collaboration.
-      </p>
-    </div>
-
-    <div className="grid md:grid-cols-3 gap-8">
-      {[
-        {
-          title: "AI Profile Matching",
-          desc: "Smart algorithm connects startups with ideal investors based on domain, capital, and preferences.",
-          icon: <Shield className="h-10 w-10 text-primary" />,
-        },
-        {
-          title: "Investor Network",
-          desc: "Access verified investors worldwide with transparent funding histories and preferences.",
-          icon: <Cloud className="h-10 w-10 text-primary" />,
-        },
-        {
-          title: "Live Funding Deals",
-          desc: "Real-time investment offers with terms comparison and instant negotiation capabilities.",
-          icon: <Zap className="h-10 w-10 text-primary" />,
-        },
-        {
-          title: "Capital Security",
-          desc: "Escrow-protected transactions with milestone-based fund release for risk mitigation.",
-          icon: <Shield className="h-10 w-10 text-primary" />,
-        },
-        {
-          title: "ROI Tracking",
-          desc: "Dashboard to monitor investment performance and startup growth metrics in real-time.",
-          icon: <Clock className="h-10 w-10 text-primary" />,
-        },
-        {
-          title: "Pitch Analytics",
-          desc: "Detailed insights on investor engagement and pitch performance metrics.",
-          icon: <BarChart className="h-10 w-10 text-primary" />,
-        },
-      ].map((feature, index) => (
-        <Card
-          key={index}
-          className="group hover:shadow-md transition-all duration-300 overflow-hidden border bg-background"
-        >
-          <div className="absolute h-1 bg-primary w-0 group-hover:w-full transition-all duration-500 top-0 left-0"></div>
-          <CardHeader>
-            <div className="mb-4">{feature.icon}</div>
-            <CardTitle>{feature.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">{feature.desc}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
-  </div>
-</section>
-
-      {/* Testimonials */}
-      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <Badge variant="outline" className="mb-4">
-              Testimonials
+              Powerful Features
             </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">What Our Users Say</h2>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">Everything Startups & Investors Need</h2>
             <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              Join thousands of satisfied users who trust FileShare for their file sharing needs.
+              Connect startups with investors through smart matching, secure deals, and real-time collaboration.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8">
             {[
               {
-                name: "John Doe",
-                role: "Marketing Director",
+                title: "AI Profile Matching",
+                desc: "Smart algorithm connects startups with ideal investors based on domain, capital, and preferences.",
+                icon: <Shield className="h-10 w-10 text-primary" />,
+              },
+              {
+                title: "Investor Network",
+                desc: "Access verified investors worldwide with transparent funding histories and preferences.",
+                icon: <Cloud className="h-10 w-10 text-primary" />,
+              },
+              {
+                title: "Live Funding Deals",
+                desc: "Real-time investment offers with terms comparison and instant negotiation capabilities.",
+                icon: <Zap className="h-10 w-10 text-primary" />,
+              },
+              {
+                title: "Capital Security",
+                desc: "Escrow-protected transactions with milestone-based fund release for risk mitigation.",
+                icon: <Shield className="h-10 w-10 text-primary" />,
+              },
+              {
+                title: "ROI Tracking",
+                desc: "Dashboard to monitor investment performance and startup growth metrics in real-time.",
+                icon: <Clock className="h-10 w-10 text-primary" />,
+              },
+              {
+                title: "Pitch Analytics",
+                desc: "Detailed insights on investor engagement and pitch performance metrics.",
+                icon: <BarChart className="h-10 w-10 text-primary" />,
+              },
+            ].map((feature, index) => (
+              <Card
+                key={index}
+                className="group hover:shadow-md transition-all duration-300 overflow-hidden border bg-background"
+              >
+                <div className="absolute h-1 bg-primary w-0 group-hover:w-full transition-all duration-500 top-0 left-0"></div>
+                <CardHeader>
+                  <div className="mb-4">{feature.icon}</div>
+                  <CardTitle>{feature.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{feature.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials */}
+      <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Success Stories
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">What Our Community Says</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Join successful startups and investors who found perfect matches through our platform.
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {[
+              {
+                name: "Rahul Verma",
+                role: "Startup Founder",
                 review:
-                  "FileShare has transformed how our team shares assets with clients. The security features give us peace of mind, and the interface is intuitive.",
+                  "The AI matching connected us with ideal investors in 72 hours. We secured 1.8Cr funding at better terms than expected!",
                 avatar: "/placeholder.svg?height=100&width=100",
               },
               {
-                name: "Sarah Smith",
-                role: "Freelance Designer",
+                name: "Priya Khanna",
+                role: "Angel Investor",
                 review:
-                  "As a freelancer, I need to share large design files daily. FileShare makes it simple and professional. The password protection is a game-changer!",
+                  "Found 3 high-potential startups in my niche this quarter. The live deal feature makes due diligence and negotiations seamless.",
                 avatar: "/placeholder.svg?height=100&width=100",
               },
               {
-                name: "Michael Johnson",
-                role: "IT Manager",
+                name: "Arjun Mehta",
+                role: "Venture Partner",
                 review:
-                  "The end-to-end encryption and detailed access logs meet our strict security requirements. FileShare is now our company standard for file sharing.",
+                  "Our fund deployed ₹25Cr through this platform. The escrow security and ROI tracking features give us complete confidence.",
                 avatar: "/placeholder.svg?height=100&width=100",
               },
             ].map((testimonial, index) => (
@@ -445,27 +445,27 @@ const LandingPage = () => {
       {/* CTA Section */}
       <section className="py-20 px-4 sm:px-6 lg:px-8 bg-primary text-primary-foreground">
         <div className="max-w-5xl mx-auto text-center">
-          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Start Sharing?</h2>
+          <h2 className="text-3xl md:text-4xl font-bold mb-6">Ready to Transform Your Future?</h2>
           <p className="text-lg md:text-xl opacity-90 mb-8 max-w-2xl mx-auto">
-            Join thousands of users who trust FileShare for secure, fast, and reliable file sharing.
+            Join hundreds of startups and investors achieving growth through smart matches and secure deals.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <Link href="/signup">
               <Button size="lg" variant="secondary" className="w-full sm:w-auto">
-                Create Free Account
+                Get Started
               </Button>
             </Link>
             <Link href="/pricing">
               <Button
                 size="lg"
                 variant="outline"
-                className="border-primary-foreground text-primary-foreground hover:bg-primary-foreground/10 w-full sm:w-auto"
+                className="border-primary-foreground text-black hover:bg-black hover:text-white w-full sm:w-auto"
               >
-                View Pricing
+                Explore Investor Plans
               </Button>
             </Link>
           </div>
-          <p className="mt-6 text-sm opacity-80">No credit card required • Free plan available • Cancel anytime</p>
+          <p className="mt-6 text-sm opacity-80">No upfront fees • Free startup profile • No obligations</p>
         </div>
       </section>
 
