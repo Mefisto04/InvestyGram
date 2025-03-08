@@ -16,6 +16,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "sonner";
+import Navbar from "@/components/Navbar";
 
 export default function LoginPage() {
   const router = useRouter();
@@ -43,8 +44,17 @@ export default function LoginPage() {
       if (!response.ok) {
         throw new Error("Login failed");
       }
+      const result = await response.json();
+
+      localStorage.setItem("UserId", result.user.id);
+      if (userType === "startup") {
+        localStorage.setItem("StartupId", result.user.startupId);
+      } else {
+        localStorage.setItem("InvestorId", result.user.investorId);
+      }
 
       toast.success("Login successful!");
+
       router.push(userType === "startup" ? "/startups" : "/investor");
       // router.push("/startups")
     } catch (error) {
@@ -56,6 +66,7 @@ export default function LoginPage() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      <Navbar />
       <Card className="w-[400px]">
         <CardHeader>
           <CardTitle>Welcome Back</CardTitle>

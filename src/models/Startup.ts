@@ -1,3 +1,4 @@
+import { Schema } from "mongoose";
 import { Document } from "mongoose";
 import { z } from "zod";
 
@@ -10,8 +11,17 @@ export interface IStartup extends Document {
     domain: string;
     capital: number;
     tagline: string;
-    companyImage: string;
-    pitchVideo: string;
+    companyImage: {
+        url: string;
+        fileType: string;
+        originalName: string;
+    };
+
+    pitchVideo: {
+        url: string;
+        fileType: string;
+        originalName: string;
+    };
     socialProof: {
         instagramFollowers: number;
     };
@@ -30,6 +40,47 @@ export interface IStartup extends Document {
     isVerified: boolean;
 }
 
+export const StartupSchema = new Schema<IStartup>(
+    {
+        startupId: { type: String, required: true, unique: true },
+        name: { type: String, required: true },
+        email: { type: String, required: true, unique: true },
+        password: { type: String, required: true },
+        confirmPassword: { type: String, required: true },
+        domain: { type: String, required: true },
+        capital: { type: Number, required: true },
+        tagline: { type: String, required: true },
+        companyImage: {
+            url: { type: String },
+            fileType: { type: String },
+            originalName: { type: String }
+        },
+        pitchVideo: {
+            url: { type: String, default: "" },
+            fileType: { type: String, default: "" },
+            originalName: { type: String, default: "" }
+        },
+        
+        socialProof: {
+            instagramFollowers: { type: Number, default: 0 }
+        },
+        fundingInfo: {
+            currentRound: { type: String, required: true },
+            amountRaised: { type: Number, default: 0 },
+            targetAmount: { type: Number, required: true }
+        },
+        investorPrefs: {
+            minInvestment: { type: Number, required: true },
+            maxInvestment: { type: Number, required: true },
+            preferredIndustries: [{ type: String }],
+            preferredStages: [{ type: String }]
+        },
+        createdAt: { type: Date, default: Date.now },
+        isVerified: { type: Boolean, default: false }
+    },
+    { timestamps: true }
+);
+
 // Zod Validation
 export const StartupValidation = z.object({
     startupId: z.string(),
@@ -40,8 +91,16 @@ export const StartupValidation = z.object({
     domain: z.string(),
     capital: z.number(),
     tagline: z.string(),
-    companyImage: z.string().optional(),
-    pitchVideo: z.string().optional(),
+    companyImage: z.object({
+        url: z.string(),
+        fileType: z.string(),
+        originalName: z.string()
+    }).optional(),
+    pitchVideo: z.object({
+        url: z.string().default(""),
+        fileType: z.string().default(""),
+        originalName: z.string().default("")
+    }).optional(),
     socialProof: z.object({
         instagramFollowers: z.number()
     }),

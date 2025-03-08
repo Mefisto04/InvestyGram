@@ -11,7 +11,7 @@ export interface IFunding extends Document {
     createdAt: Date;
 }
 
-const FundingSchema = new Schema<IFunding>(
+export const FundingSchema = new Schema<IFunding>(
     {
         startupId: { type: String, required: true, ref: 'Startup' },
         investorId: { type: String, required: true, ref: 'Investor' },
@@ -24,7 +24,7 @@ const FundingSchema = new Schema<IFunding>(
     { timestamps: true }
 );
 
-export const Funding = mongoose.model<IFunding>("Funding", FundingSchema);
+// export const Funding = mongoose.model<IFunding>("Funding", FundingSchema);
 
 // Zod Validation
 export const FundingValidation = z.object({

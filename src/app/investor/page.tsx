@@ -1,150 +1,109 @@
 "use client";
-
+import React from "react";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { ChevronRight, Search, FileText, CreditCard } from "lucide-react";
+import Link from "next/link";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { ArrowRight, Building2, Handshake, LineChart, Search } from "lucide-react";
-import GetInvestor from "@/components/GetInvestor"
+import { useRouter } from "next/navigation";
+import Footer from "@/components/Footer";
 
-export default function InvestorPage() {
+const InvestorTutorialSection = () => {
+  const router = useRouter();
   return (
-    <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
-      {/* Hero Section */}
-      {/* //<GetInvestor/> */}
-      <section className="container mx-auto px-4 py-20">
-        <div className="text-center">
-          <h1 className="text-5xl font-bold tracking-tight text-gray-900 mb-6">
-            Connect with Promising Startups
-          </h1>
-          <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-            Discover and invest in the next generation of innovative startups. Join our network of successful investors.
+    <>
+    <section
+      id="how-it-works"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-primary/90 to-purple-600 text-white relative overflow-hidden"
+    >
+      <div className="max-w-7xl mx-auto relative z-10">
+        <div className="text-center mb-16">
+          <Badge 
+            variant="outline" 
+            className="mb-4 bg-white/10 border-white/30 text-white transition-all duration-300 hover:bg-white/20 backdrop-blur-md"
+          >
+            Investor Guide
+          </Badge>
+          <h2 className="text-3xl md:text-4xl font-bold text-white drop-shadow-md">
+            How to Invest in Startups
+          </h2>
+          <p className="mt-4 text-lg text-white/80 max-w-2xl mx-auto">
+            Discover and fund promising startups in three simple steps.
           </p>
-          <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-            Start Investing <ArrowRight className="ml-2 h-4 w-4" />
-          </Button>
         </div>
-      </section>
 
-      {/* Featured Startups Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Featured Startups</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {[1, 2, 3].map((i) => (
-            <Card key={i} className="hover:shadow-lg transition-shadow">
-              <CardHeader>
-                <CardTitle>Tech Startup {i}</CardTitle>
-                <CardDescription>AI & Machine Learning</CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="space-y-4">
-                  <p className="text-gray-600">
-                    Revolutionary AI solution for enterprise automation.
-                  </p>
-                  <div className="space-y-2">
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Funding Round:</span>
-                      <span className="font-medium">Seed</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Investment Range:</span>
-                      <span className="font-medium text-blue-600">$500K - $1M</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Team Size:</span>
-                      <span className="font-medium">5-10</span>
-                    </div>
-                    <div className="flex justify-between text-sm">
-                      <span className="text-gray-500">Location:</span>
-                      <span className="font-medium">San Francisco, CA</span>
-                    </div>
+        <div className="grid md:grid-cols-3 gap-8 relative">
+          {/* Connection lines */}
+          <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-white/20 -z-10 transform -translate-y-1/2"></div>
+
+          {[
+            {
+              title: "Browse Startups",
+              desc: "Explore startups based on your area of interest, domain expertise, and investment preferences.",
+              icon: <Search size={32} />,
+              step: 1,
+            },
+            {
+              title: "Review Details",
+              desc: "Watch pitch videos, check startup profiles, and evaluate growth metrics before making decisions.",
+              icon: <FileText size={32} />,
+              step: 2,
+            },
+            {
+              title: "Make Investments",
+              desc: "Fund promising startups with customizable investment terms and clearly defined conditions.",
+              icon: <CreditCard size={32} />,
+              step: 3,
+            },
+          ].map((item, index) => (
+            <Card
+              key={index}
+              className="border-2 border-white/20 group hover:border-white/40 bg-black/30 hover:bg-black/40 shadow-xl shadow-black/30 hover:shadow-2xl hover:shadow-black/50 transition-all duration-500 backdrop-blur-lg overflow-hidden"
+            >
+              <CardHeader className="pb-2 relative">
+                <div className="flex justify-between items-center mb-2">
+                  <div className="h-12 w-12 rounded-full bg-white/10 flex items-center justify-center text-white transform transition-transform duration-500 group-hover:scale-110 group-hover:rotate-3 shadow-md shadow-black/20">
+                    {item.icon}
                   </div>
-                  <div className="flex gap-2 pt-2">
-                    <Button variant="outline" className="flex-1">View Details</Button>
-                    <Button className="flex-1 bg-green-600 hover:bg-green-700">
-                      Watch Pitch <ArrowRight className="ml-2 h-4 w-4" />
-                    </Button>
-                  </div>
+                  <Badge 
+                    variant="outline" 
+                    className="bg-black/20 border-white/20 text-white transition-colors duration-300 group-hover:bg-black/30 group-hover:border-white/30 backdrop-blur-sm shadow-sm"
+                  >
+                    Step {item.step}
+                  </Badge>
                 </div>
+                <CardTitle className="text-xl text-white transition-all duration-300 drop-shadow-md">
+                  {item.title}
+                </CardTitle>
+              </CardHeader>
+              
+              <CardContent className="relative">
+                <p className="text-white/80 group-hover:text-white transition-colors duration-300">
+                  {item.desc}
+                </p>
               </CardContent>
             </Card>
           ))}
         </div>
-      </section>
 
-      {/* How It Works Section */}
-      <section className="bg-white py-16">
-        <div className="container mx-auto px-4">
-          <h2 className="text-3xl font-bold text-center mb-12">How It Works</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Search className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Browse Startups</h3>
-              <p className="text-gray-600">Explore our curated list of promising startups</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <Handshake className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Connect</h3>
-              <p className="text-gray-600">Connect with startups that match your investment criteria</p>
-            </div>
-            <div className="text-center">
-              <div className="bg-blue-100 w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4">
-                <LineChart className="h-8 w-8 text-blue-600" />
-              </div>
-              <h3 className="text-xl font-semibold mb-2">Invest</h3>
-              <p className="text-gray-600">Make informed investment decisions with our platform</p>
-            </div>
-          </div>
+        <div className="mt-12 text-center">
+          <Link href="/investor/discover">
+            <Button 
+              className="group bg-white text-primary hover:bg-white/90 shadow-lg shadow-black/20 hover:shadow-xl hover:shadow-black/30 transition-all duration-300 backdrop-blur-sm"
+              onClick={() => {
+                router.push('/investor/discover');
+              }}
+            >
+              <span className="relative z-10">Start Investing Now</span>
+              <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform duration-300" />
+            </Button>
+          </Link>
         </div>
-      </section>
-
-      {/* Benefits Section */}
-      <section className="container mx-auto px-4 py-16">
-        <h2 className="text-3xl font-bold text-center mb-12">Why Choose Us</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <Building2 className="h-6 w-6 mr-2 text-blue-600" />
-                Verified Startups
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                All startups are thoroughly vetted and verified before being listed on our platform.
-              </p>
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center">
-                <LineChart className="h-6 w-6 mr-2 text-blue-600" />
-                Market Insights
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <p className="text-gray-600">
-                Access detailed market analysis and growth projections for each startup.
-              </p>
-            </CardContent>
-          </Card>
-        </div>
-      </section>
-
-      {/* CTA Section */}
-      <section className="bg-blue-600 text-white py-16">
-        <div className="container mx-auto px-4 text-center">
-          <h2 className="text-3xl font-bold mb-6">Ready to Start Investing?</h2>
-          <p className="text-xl mb-8 max-w-2xl mx-auto">
-            Join our network of successful investors and discover the next big opportunity.
-          </p>
-          <Button size="lg" variant="secondary">
-            Create Account
-          </Button>
-        </div>
-      </section>
-    </div>
+      </div>
+    </section>
+    <Footer/>
+    </>
   );
-}
+};
+
+export default InvestorTutorialSection;
