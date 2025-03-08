@@ -465,7 +465,7 @@ const LandingPage = () => {
               </Button>
             </Link>
           </div>
-          <p className="mt-6 text-sm opacity-80">No upfront fees • Free startup profile • No obligations</p>
+          <p className="mt-6 text-sm opacity-80">  Fuel Dreams, Fund Futures – Where Investors Meet Innovation</p>
         </div>
       </section>
 
