@@ -14,8 +14,10 @@ import {
   Send,
   CheckCircle2
 } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 export default function StartupPage() {
+  const router = useRouter();
   return (
     <>
     
@@ -30,8 +32,10 @@ export default function StartupPage() {
           <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
             Showcase your startup to a network of successful investors. Get funding, mentorship, and grow your business.
           </p>
-          <Button size="lg" className="bg-blue-600 hover:bg-blue-700">
-            List Your Startup <ArrowRight className="ml-2 h-4 w-4" />
+          <Button size="lg" className="bg-blue-600 hover:bg-blue-700"
+          onClick={() => router.push("/startups/liveFunding")}
+          >
+            Live Funding Offers <ArrowRight className="ml-2 h-4 w-4" />
           </Button>
         </div>
       </section>
