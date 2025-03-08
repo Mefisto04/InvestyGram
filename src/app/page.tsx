@@ -68,11 +68,15 @@ const LandingPage = () => {
 
             {/* Desktop Navigation */}
             <div className="hidden md:flex items-center space-x-8">
+              
+              <Link href="#startup-flow" className="text-muted-foreground hover:text-foreground transition-colors">
+                Startup
+              </Link>
+              <Link href="#investor-flow" className="text-muted-foreground hover:text-foreground transition-colors">
+                Investor
+              </Link>
               <Link href="#features" className="text-muted-foreground hover:text-foreground transition-colors">
                 Features
-              </Link>
-              <Link href="#how-it-works" className="text-muted-foreground hover:text-foreground transition-colors">
-                How It Works
               </Link>
               <Link href="#testimonials" className="text-muted-foreground hover:text-foreground transition-colors">
                 Testimonials
@@ -82,7 +86,7 @@ const LandingPage = () => {
                   Log in
                 </Button>
               </Link>
-              <Link href="/home">
+              <Link href="/auth/login">
                 <Button>Get Started</Button>
               </Link>
             </div>
@@ -220,179 +224,179 @@ const LandingPage = () => {
 
       {/* How It Works */}
       <section id="startup-flow" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <Badge variant="outline" className="mb-4">
-        Startup Journey
-      </Badge>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground">How It Works for Startups</h2>
-      <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-        Follow these simple steps to register your startup and connect with investors.
-      </p>
-    </div>
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Startup Journey
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">How It Works for Startups</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Follow these simple steps to register your startup and connect with investors.
+            </p>
+          </div>
 
-    <div className="grid md:grid-cols-3 gap-8 relative">
-      {/* Connection lines (only visible on md and up) */}
-      <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-primary/20 -z-10 transform -translate-y-1/2"></div>
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {/* Connection lines (only visible on md and up) */}
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-primary/20 -z-10 transform -translate-y-1/2"></div>
 
-      {[
-        {
-          title: "Register Your Startup",
-          desc: "Provide basic information about your startup, including area of interest, domain, and capital.",
-          icon: <UserPlus size={32} />,
-          step: 1,
-        },
-        {
-          title: "Business & Product Info",
-          desc: "Share details about your business model, product, and market.",
-          icon: <Briefcase size={32} />,
-          step: 2,
-        },
-        {
-          title: "Financial & Funding Info",
-          desc: "Provide financial details and funding requirements.",
-          icon: <DollarSign size={32} />,
-          step: 3,
-        },
-        {
-          title: "Pitch & Supporting Docs",
-          desc: "Upload your pitch deck and any supporting documents.",
-          icon: <FileText size={32} />,
-          step: 4,
-        },
-        {
-          title: "Social Proof",
-          desc: "Showcase your social media presence and followers.",
-          icon: <Instagram size={32} />,
-          step: 5,
-        },
-        {
-          title: "Investor Preferences",
-          desc: "Specify your preferred investors and investment terms.",
-          icon: <Handshake size={32} />,
-          step: 6,
-        },
-      ].map((item, index) => (
-        <Card
-          key={index}
-          className="border-2 group hover:border-primary hover:shadow-lg transition-all duration-300"
-        >
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-center mb-2">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                {item.icon}
-              </div>
-              <Badge variant="outline" className="bg-muted">
-                Step {item.step}
-              </Badge>
-            </div>
-            <CardTitle className="text-xl">{item.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">{item.desc}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+            {[
+              {
+                title: "Register Your Startup",
+                desc: "Provide basic information about your startup, including area of interest, domain, and capital.",
+                icon: <UserPlus size={32} />,
+                step: 1,
+              },
+              {
+                title: "Business & Product Info",
+                desc: "Share details about your business model, product, and market.",
+                icon: <Briefcase size={32} />,
+                step: 2,
+              },
+              {
+                title: "Financial & Funding Info",
+                desc: "Provide financial details and funding requirements.",
+                icon: <DollarSign size={32} />,
+                step: 3,
+              },
+              {
+                title: "Pitch & Supporting Docs",
+                desc: "Upload your pitch deck and any supporting documents.",
+                icon: <FileText size={32} />,
+                step: 4,
+              },
+              {
+                title: "Social Proof",
+                desc: "Showcase your social media presence and followers.",
+                icon: <Instagram size={32} />,
+                step: 5,
+              },
+              {
+                title: "Investor Preferences",
+                desc: "Specify your preferred investors and investment terms.",
+                icon: <Handshake size={32} />,
+                step: 6,
+              },
+            ].map((item, index) => (
+              <Card
+                key={index}
+                className="border-2 group hover:border-primary hover:shadow-lg transition-all duration-300"
+              >
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      {item.icon}
+                    </div>
+                    <Badge variant="outline" className="bg-muted">
+                      Step {item.step}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{item.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-    <div className="mt-12 text-center">
-      <Link href="/startup-registration">
-        <Button className="group">
-          Get Started
-          <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </Button>
-      </Link>
-    </div>
-  </div>
-</section>
+          <div className="mt-12 text-center">
+            <Link href="/startup-registration">
+              <Button className="group">
+                Get Started
+                <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
 
-<section id="investor-flow" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
-  <div className="max-w-7xl mx-auto">
-    <div className="text-center mb-16">
-      <Badge variant="outline" className="mb-4">
-        Investor Journey
-      </Badge>
-      <h2 className="text-3xl md:text-4xl font-bold text-foreground">How It Works for Investors</h2>
-      <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-        Follow these simple steps to find and invest in promising startups.
-      </p>
-    </div>
+      <section id="investor-flow" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <Badge variant="outline" className="mb-4">
+              Investor Journey
+            </Badge>
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground">How It Works for Investors</h2>
+            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+              Follow these simple steps to find and invest in promising startups.
+            </p>
+          </div>
 
-    <div className="grid md:grid-cols-3 gap-8 relative">
-      {/* Connection lines (only visible on md and up) */}
-      <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-primary/20 -z-10 transform -translate-y-1/2"></div>
+          <div className="grid md:grid-cols-3 gap-8 relative">
+            {/* Connection lines (only visible on md and up) */}
+            <div className="hidden md:block absolute top-1/2 left-0 right-0 h-0.5 bg-primary/20 -z-10 transform -translate-y-1/2"></div>
 
-      {[
-        {
-          title: "Set Preferences",
-          desc: "Define your area of interest, domain, and capital investment range.",
-          icon: <Settings size={32} />,
-          step: 1,
-        },
-        {
-          title: "Review Startups",
-          desc: "Browse through startups that match your preferences.",
-          icon: <Search size={32} />,
-          step: 2,
-        },
-        {
-          title: "Evaluate Pitch",
-          desc: "Review the startup's pitch, past funding, and vision.",
-          icon: <FileText size={32} />,
-          step: 3,
-        },
-        {
-          title: "Provide Feedback",
-          desc: "Offer feedback and score the startup out of 100.",
-          icon: <MessageCircle size={32} />,
-          step: 4,
-        },
-        {
-          title: "Make an Offer",
-          desc: "Submit your investment offer based on your evaluation.",
-          icon: <Handshake size={32} />,
-          step: 5,
-        },
-        {
-          title: "Track Investment",
-          desc: "Monitor the progress and growth of your investment.",
-          icon: <TrendingUp size={32} />,
-          step: 6,
-        },
-      ].map((item, index) => (
-        <Card
-          key={index}
-          className="border-2 group hover:border-primary hover:shadow-lg transition-all duration-300"
-        >
-          <CardHeader className="pb-2">
-            <div className="flex justify-between items-center mb-2">
-              <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
-                {item.icon}
-              </div>
-              <Badge variant="outline" className="bg-muted">
-                Step {item.step}
-              </Badge>
-            </div>
-            <CardTitle className="text-xl">{item.title}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <p className="text-muted-foreground">{item.desc}</p>
-          </CardContent>
-        </Card>
-      ))}
-    </div>
+            {[
+              {
+                title: "Set Preferences",
+                desc: "Define your area of interest, domain, and capital investment range.",
+                icon: <Settings size={32} />,
+                step: 1,
+              },
+              {
+                title: "Review Startups",
+                desc: "Browse through startups that match your preferences.",
+                icon: <Search size={32} />,
+                step: 2,
+              },
+              {
+                title: "Evaluate Pitch",
+                desc: "Review the startup's pitch, past funding, and vision.",
+                icon: <FileText size={32} />,
+                step: 3,
+              },
+              {
+                title: "Provide Feedback",
+                desc: "Offer feedback and score the startup out of 100.",
+                icon: <MessageCircle size={32} />,
+                step: 4,
+              },
+              {
+                title: "Make an Offer",
+                desc: "Submit your investment offer based on your evaluation.",
+                icon: <Handshake size={32} />,
+                step: 5,
+              },
+              {
+                title: "Track Investment",
+                desc: "Monitor the progress and growth of your investment.",
+                icon: <TrendingUp size={32} />,
+                step: 6,
+              },
+            ].map((item, index) => (
+              <Card
+                key={index}
+                className="border-2 group hover:border-primary hover:shadow-lg transition-all duration-300"
+              >
+                <CardHeader className="pb-2">
+                  <div className="flex justify-between items-center mb-2">
+                    <div className="h-12 w-12 rounded-full bg-primary/10 flex items-center justify-center text-primary group-hover:bg-primary group-hover:text-primary-foreground transition-colors">
+                      {item.icon}
+                    </div>
+                    <Badge variant="outline" className="bg-muted">
+                      Step {item.step}
+                    </Badge>
+                  </div>
+                  <CardTitle className="text-xl">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent>
+                  <p className="text-muted-foreground">{item.desc}</p>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
 
-    <div className="mt-12 text-center">
-      <Link href="/investor-registration">
-        <Button className="group">
-          Get Started
-          <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
-        </Button>
-      </Link>
-    </div>
-  </div>
-</section>
+          <div className="mt-12 text-center">
+            <Link href="/investor-registration">
+              <Button className="group">
+                Get Started
+                <ChevronRight className="ml-2 h-4 w-4 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
 
       {/* Features */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
