@@ -97,19 +97,19 @@ const LandingPage = () => {
             <div className="hidden md:block relative">
               <div className="relative bg-white/10 backdrop-blur-sm rounded-lg shadow-2xl border border-white/20 p-2 transform rotate-1 hover:rotate-0 transition-transform duration-500">
                 <Image
-                  src="/logo2.jpg"
+                  src="/logo2.png"
                   width={800}
                   height={600}
                   alt="FileShare Dashboard"
                   className="rounded shadow-lg"
                 />
               </div>
-              <div className="absolute -bottom-6 -left-6 bg-white/10 backdrop-blur-sm p-4 rounded-lg border border-white/20 shadow-xl">
+              <div className="absolute -bottom-6 -left-6 bg-white backdrop-blur-xl p-4 rounded-lg border border-white/20 shadow-xl">
                 <div className="flex items-center gap-2">
                   <Shield className="h-8 w-8 text-green-300" />
-                  <div>
+                  <div className="text-black">
                     <div className="font-medium">End-to-End Encrypted</div>
-                    <div className="text-sm opacity-80">Your files are protected</div>
+                    <div className="text-sm ">Your files are protected</div>
                   </div>
                 </div>
               </div>
