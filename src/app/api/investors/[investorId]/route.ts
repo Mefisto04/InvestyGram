@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     await connectDB();
-    const investorId = await params;
+    const {investorId} = await params;
 
     const investor = await Investor.findOne({ investorId }).select(
       "name email domain capital expertise vision pastFunding"

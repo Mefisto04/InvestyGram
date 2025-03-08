@@ -8,7 +8,7 @@ export async function GET(
 ) {
   try {
     await connectDB();
-    const startupId = await params;
+    const {startupId} = await params;
 
     // Find all bids for this startup
     const bids = await Bid.find({ startupId }).sort({ createdAt: -1 });

@@ -9,7 +9,7 @@ export async function GET(
 ) {
   try {
     await connectDB();
-    const investorId = await params;
+    const {investorId} = await params;
 
     // Find all bids for this investor
     const bids = await Bid.find({ investorId }).sort({ updatedAt: -1 });

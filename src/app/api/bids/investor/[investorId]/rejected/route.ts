@@ -9,12 +9,12 @@ export async function GET(
 ) {
   try {
     await connectDB();
-    const investorId = await params;
+    const { investorId } = await params;
 
     // Find all rejected bids for this investor
-    const bids = await Bid.find({ 
-      investorId, 
-      status: "rejected" 
+    const bids = await Bid.find({
+      investorId,
+      status: "rejected"
     }).sort({ updatedAt: -1 });
 
     // Get startup details for each bid
@@ -22,7 +22,7 @@ export async function GET(
       bids.map(async (bid) => {
         const startup = await Startup.findOne({ startupId: bid.startupId })
           .select("name");
-        
+
         return {
           ...bid.toObject(),
           startupName: startup?.name || "Unknown Startup"
