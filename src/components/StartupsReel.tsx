@@ -11,6 +11,14 @@ import {
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
+import { MatchMeter } from "@/components/MatchMeter";
+import { IStartup } from "@/models/Startup";
+
+interface MatchScores {
+  visionAlignment: { score: number; reason: string };
+  domainMatch: { score: number; reason: string };
+  growthPotential: { score: number; reason: string };
+}
 
 interface StartupData {
   companyImage: {
@@ -32,6 +40,7 @@ interface StartupData {
     minInvestment: number;
     preferredIndustries: string[];
   };
+  matchScores?: MatchScores;
 }
 
 const gradientClasses = [
@@ -44,6 +53,35 @@ const gradientClasses = [
 export function StartupsReel() {
   const [startups, setStartups] = useState<StartupData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [currentInvestorId] = useState("1");
+
+  // In your StartupsReel component
+  const fetchData = async () => {
+    try {
+      const investorId = localStorage.getItem("clientId");
+      if (!investorId) throw new Error("Investor not logged in");
+
+      // First get startup IDs
+      const startupsRes = await fetch("/api/startups");
+      const startupsData = await startupsRes.json();
+
+      if (startupsData.success) {
+        // Then get scores for all startups
+        const scoresRes = await fetch("/api/match-score", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            investorId,
+            startupIds: startupsData.data, // array of ID strings
+          }),
+        });
+
+        // ... handle response ...
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    }
+  };
 
   useEffect(() => {
     const fetchStartups = async () => {
@@ -156,6 +194,31 @@ export function StartupsReel() {
                   </div>
                 </div>
               </div>
+              <div className="grid grid-cols-3 gap-4 mt-4">
+                {startup.matchScores && (
+                  <>
+                    <MatchMeter
+                      value={startup.matchScores.visionAlignment.score}
+                      label="Vision Match"
+                    />
+                    <MatchMeter
+                      value={startup.matchScores.domainMatch.score}
+                      label="Domain Match"
+                    />
+                    <MatchMeter
+                      value={startup.matchScores.growthPotential.score}
+                      label="Growth Potential"
+                    />
+                  </>
+                )}
+              </div>
+              {startup.matchScores && (
+                <div className="text-sm text-muted-foreground space-y-2">
+                  <p>💡 {startup.matchScores.visionAlignment.reason}</p>
+                  <p>🎯 {startup.matchScores.domainMatch.reason}</p>
+                  <p>📈 {startup.matchScores.growthPotential.reason}</p>
+                </div>
+              )}
             </CardContent>
 
             <CardFooter className="absolute bottom-0 w-full bg-background/80 border-t">
