@@ -7,12 +7,12 @@ import { Startup } from "@/models";
 
 export async function POST(
   request: Request,
-  { params }: { params: { bidId: string } }
+  { params }: { params: { bidId: string } } // Correctly typed params
 ) {
   try {
     await connectDB();
-    const bidId = params.bidId;
-    const { startupId } = await request.json();
+    const { bidId } = params; // Extract bidId from params
+    const { startupId } = await request.json(); // Extract startupId from the request body
 
     // Check if the bid exists
     const bid = await Bid.findById(bidId);
