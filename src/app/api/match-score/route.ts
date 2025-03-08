@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 import { Startup } from '@/models'
 import { Investor } from '@/models'
+import { getMockMatchScores } from '@/utils/promptResponse'
 
 const genAI = new GoogleGenerativeAI(process.env.NEXT_PUBLIC_GEMINI_API_KEY!)
 
@@ -44,6 +45,12 @@ export async function POST(req: NextRequest) {
             }, { status: 404 });
         }
 
+        // USING MOCK RESPONSES INSTEAD OF GEMINI API
+        // Get mock match scores for testing
+        const scores = getMockMatchScores(startups.length);
+        
+        /* 
+        // ORIGINAL GEMINI IMPLEMENTATION (COMMENTED OUT)
         // Generate scores
         const scoresPromises = startups.map(async (startup) => {
             // Remove .toObject() calls since we're using .lean()
@@ -78,6 +85,7 @@ Calculate scores with reasoning. Return ONLY JSON:
         });
 
         const scores = await Promise.all(scoresPromises);
+        */
 
         // Combine data - remove .toObject() here as well
         const results = startups.map((startup, index) => ({

@@ -108,23 +108,23 @@ export function StartupsReel() {
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchStartups = async () => {
-      try {
-        const response = await fetch("/api/startups");
-        const data = await response.json();
-        if (data.success) {
-          setStartups(data.data);
-        }
-      } catch (error) {
-        console.error("Error fetching startups:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchStartups = async () => {
+  //     try {
+  //       const response = await fetch("/api/startups");
+  //       const data = await response.json();
+  //       if (data.success) {
+  //         setStartups(data.data);
+  //       }
+  //     } catch (error) {
+  //       console.error("Error fetching startups:", error);
+  //     } finally {
+  //       setLoading(false);
+  //     }
+  //   };
 
-    fetchStartups();
-  }, []);
+  //   fetchStartups();
+  // }, []);
 
   if (loading) {
     return (
@@ -140,7 +140,7 @@ export function StartupsReel() {
 
   return (
     <motion.div
-      className="h-screen snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
+      className="h-full snap-y snap-mandatory overflow-y-scroll scrollbar-hide"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
@@ -223,15 +223,15 @@ export function StartupsReel() {
                 {startup.matchScores && (
                   <>
                     <MatchMeter
-                      value={startup.matchScores.visionAlignment.score*100}
+                      value={startup.matchScores.visionAlignment.score * 10}
                       label="Vision Match"
                     />
                     <MatchMeter
-                      value={startup.matchScores.domainMatch.score+45}
+                      value={startup.matchScores.domainMatch.score * 10}
                       label="Domain Match"
                     />
                     <MatchMeter
-                      value={startup.matchScores.growthPotential.score*38}
+                      value={startup.matchScores.growthPotential.score * 10}
                       label="Growth Potential"
                     />
                   </>
