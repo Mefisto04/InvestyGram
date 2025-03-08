@@ -65,10 +65,7 @@ export async function POST(request: Request) {
                     );
                 }
 
-                // Extract nested objects from the form data
-                const { socialProof, fundingInfo, investorPrefs, companyImage } = rest;
-
-                user = await Startup.create({
+                const startupData = {
                     name: rest.name,
                     email,
                     password: hashedPassword,
@@ -78,27 +75,33 @@ export async function POST(request: Request) {
                     tagline: rest.tagline,
                     startupId: `ST${Date.now()}`,
                     companyImage: {
-                        url: companyImage?.url || "",
-                        fileType: companyImage?.fileType || "",
-                        originalName: companyImage?.originalName || ""
+                        url: rest.companyImage?.url || "",
+                        fileType: rest.companyImage?.fileType || "",
+                        originalName: rest.companyImage?.originalName || ""
                     },
-                    pitchVideo: rest.pitchVideo || "",
+                    pitchVideo: {
+                        url: rest.pitchVideo?.url || "",
+                        fileType: rest.pitchVideo?.fileType || "",
+                        originalName: rest.pitchVideo?.originalName || ""
+                    },
                     socialProof: {
-                        instagramFollowers: socialProof?.instagramFollowers || 0
+                        instagramFollowers: rest.socialProof?.instagramFollowers || 0
                     },
                     fundingInfo: {
-                        currentRound: fundingInfo?.currentRound || "Seed",
-                        amountRaised: fundingInfo?.amountRaised || 0,
-                        targetAmount: fundingInfo?.targetAmount || Number(rest.capital)
+                        currentRound: rest.fundingInfo?.currentRound || "Seed",
+                        amountRaised: rest.fundingInfo?.amountRaised || 0,
+                        targetAmount: rest.fundingInfo?.targetAmount || Number(rest.capital)
                     },
                     investorPrefs: {
-                        minInvestment: investorPrefs?.minInvestment || 0,
-                        maxInvestment: investorPrefs?.maxInvestment || Number(rest.capital),
-                        preferredIndustries: investorPrefs?.preferredIndustries || [],
-                        preferredStages: investorPrefs?.preferredStages || []
+                        minInvestment: rest.investorPrefs?.minInvestment || 0,
+                        maxInvestment: rest.investorPrefs?.maxInvestment || Number(rest.capital),
+                        preferredIndustries: rest.investorPrefs?.preferredIndustries || [],
+                        preferredStages: rest.investorPrefs?.preferredStages || []
                     },
                     isVerified: false
-                });
+                };
+
+                user = await Startup.create(startupData);
             } else if (userType === "investor") {
                 // Validate investor-specific fields
                 if (!rest.name || !rest.domain || !rest.capital || !rest.vision || !rest.expertise) {
