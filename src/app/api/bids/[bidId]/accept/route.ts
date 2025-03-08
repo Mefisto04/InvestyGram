@@ -7,12 +7,14 @@ import { Startup } from "@/models";
 
 export async function POST(
   request: Request,
-  { params }: { params: { bidId: string } } // Correctly typed params
+  { params }: { params: Promise<{ bidId: string }> }
 ) {
+  // Await the promise to get the params object
+  const { bidId } = await params;
+
   try {
     await connectDB();
-    const { bidId } = params; // Extract bidId from params
-    const { startupId } = await request.json(); // Extract startupId from the request body
+    const { startupId } = await request.json();
 
     // Check if the bid exists
     const bid = await Bid.findById(bidId);
@@ -37,11 +39,7 @@ export async function POST(
 
     try {
       // 1. Update the current bid to accepted
-      await Bid.findByIdAndUpdate(
-        bidId,
-        { status: "accepted" },
-        { session }
-      );
+      await Bid.findByIdAndUpdate(bidId, { status: "accepted" }, { session });
 
       // 2. Reject all other pending bids for this startup
       await Bid.updateMany(
@@ -75,11 +73,12 @@ export async function POST(
       await session.commitTransaction();
       session.endSession();
 
-      return NextResponse.json({
-        message: "Bid accepted successfully"
-      }, { status: 200 });
+      return NextResponse.json(
+        { message: "Bid accepted successfully" },
+        { status: 200 }
+      );
     } catch (error) {
-      // If anything fails, abort the transaction
+      // Abort transaction if anything fails
       await session.abortTransaction();
       session.endSession();
       throw error;
