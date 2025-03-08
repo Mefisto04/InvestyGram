@@ -52,8 +52,8 @@ const LandingPage = () => {
 
   return (
     <div className="min-h-screen flex flex-col bg-background">
-  
-      
+
+
 
       {/* Hero Section */}
       <header className="relative pt-16 pb-24 overflow-hidden bg-gradient-to-br from-primary/90 to-purple-600 text-primary-foreground">
@@ -91,7 +91,7 @@ const LandingPage = () => {
                 </Link>
               </div>
 
-              <div className="text-sm opacity-80 pt-2">No credit card required • Free plan available</div>
+              <div className="text-sm opacity-80 pt-2">Invest Today, Empower Tomorrow – Your Future Starts Here.</div>
             </div>
 
             <div className="hidden md:block relative">
@@ -108,8 +108,8 @@ const LandingPage = () => {
                 <div className="flex items-center gap-2">
                   <Shield className="h-8 w-8 text-green-300" />
                   <div className="text-black">
-                    <div className="font-medium">End-to-End Encrypted</div>
-                    <div className="text-sm ">Your files are protected</div>
+                    <div className="font-medium">End-to-End Secure</div>
+                    <div className="text-sm ">Invest Smart, Grow Forever</div>
                   </div>
                 </div>
               </div>
@@ -123,10 +123,10 @@ const LandingPage = () => {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
             {[
-              { label: "Files Shared", value: "10M+" },
-              { label: "Active Users", value: "500K+" },
-              { label: "Countries", value: "150+" },
-              { label: "Uptime", value: "99.9%" },
+              { label: "Startups Funded", value: "100+" },
+              { label: "Investors Active", value: "1000+" },
+              { label: "Total Match", value: "5k+" },
+              { label: "Global Reach", value: "50+" },
             ].map((stat, index) => (
               <div key={index} className="space-y-1">
                 <div className="text-2xl md:text-3xl font-bold text-primary">{stat.value}</div>
@@ -315,67 +315,67 @@ const LandingPage = () => {
 
       {/* Features */}
       <section id="features" className="py-20 px-4 sm:px-6 lg:px-8 bg-muted/30">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <Badge variant="outline" className="mb-4">
-              Powerful Features
-            </Badge>
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground">Everything You Need</h2>
-            <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
-              FileShare combines security, ease of use, and powerful features to make file sharing simple.
-            </p>
-          </div>
+  <div className="max-w-7xl mx-auto">
+    <div className="text-center mb-16">
+      <Badge variant="outline" className="mb-4">
+        Powerful Features
+      </Badge>
+      <h2 className="text-3xl md:text-4xl font-bold text-foreground">Everything Startups & Investors Need</h2>
+      <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+        Connect startups with investors through smart matching, secure deals, and real-time collaboration.
+      </p>
+    </div>
 
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                title: "End-to-End Encryption",
-                desc: "Your files are encrypted before they leave your device and can only be decrypted by recipients.",
-                icon: <Shield className="h-10 w-10 text-primary" />,
-              },
-              {
-                title: "Cloud Storage",
-                desc: "Store your files securely in the cloud and access them from any device, anywhere.",
-                icon: <Cloud className="h-10 w-10 text-primary" />,
-              },
-              {
-                title: "Fast & Reliable",
-                desc: "Enjoy high-speed uploads and downloads with our globally distributed network.",
-                icon: <Zap className="h-10 w-10 text-primary" />,
-              },
-              {
-                title: "Password Protection",
-                desc: "Add an extra layer of security with password-protected links.",
-                icon: <Shield className="h-10 w-10 text-primary" />,
-              },
-              {
-                title: "Expiration Dates",
-                desc: "Set links to expire after a certain time or number of downloads.",
-                icon: <Clock className="h-10 w-10 text-primary" />,
-              },
-              {
-                title: "File Analytics",
-                desc: "Track who viewed and downloaded your files with detailed analytics.",
-                icon: <BarChart className="h-10 w-10 text-primary" />,
-              },
-            ].map((feature, index) => (
-              <Card
-                key={index}
-                className="group hover:shadow-md transition-all duration-300 overflow-hidden border bg-background"
-              >
-                <div className="absolute h-1 bg-primary w-0 group-hover:w-full transition-all duration-500 top-0 left-0"></div>
-                <CardHeader>
-                  <div className="mb-4">{feature.icon}</div>
-                  <CardTitle>{feature.title}</CardTitle>
-                </CardHeader>
-                <CardContent>
-                  <p className="text-muted-foreground">{feature.desc}</p>
-                </CardContent>
-              </Card>
-            ))}
-          </div>
-        </div>
-      </section>
+    <div className="grid md:grid-cols-3 gap-8">
+      {[
+        {
+          title: "AI Profile Matching",
+          desc: "Smart algorithm connects startups with ideal investors based on domain, capital, and preferences.",
+          icon: <Shield className="h-10 w-10 text-primary" />,
+        },
+        {
+          title: "Investor Network",
+          desc: "Access verified investors worldwide with transparent funding histories and preferences.",
+          icon: <Cloud className="h-10 w-10 text-primary" />,
+        },
+        {
+          title: "Live Funding Deals",
+          desc: "Real-time investment offers with terms comparison and instant negotiation capabilities.",
+          icon: <Zap className="h-10 w-10 text-primary" />,
+        },
+        {
+          title: "Capital Security",
+          desc: "Escrow-protected transactions with milestone-based fund release for risk mitigation.",
+          icon: <Shield className="h-10 w-10 text-primary" />,
+        },
+        {
+          title: "ROI Tracking",
+          desc: "Dashboard to monitor investment performance and startup growth metrics in real-time.",
+          icon: <Clock className="h-10 w-10 text-primary" />,
+        },
+        {
+          title: "Pitch Analytics",
+          desc: "Detailed insights on investor engagement and pitch performance metrics.",
+          icon: <BarChart className="h-10 w-10 text-primary" />,
+        },
+      ].map((feature, index) => (
+        <Card
+          key={index}
+          className="group hover:shadow-md transition-all duration-300 overflow-hidden border bg-background"
+        >
+          <div className="absolute h-1 bg-primary w-0 group-hover:w-full transition-all duration-500 top-0 left-0"></div>
+          <CardHeader>
+            <div className="mb-4">{feature.icon}</div>
+            <CardTitle>{feature.title}</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-muted-foreground">{feature.desc}</p>
+          </CardContent>
+        </Card>
+      ))}
+    </div>
+  </div>
+</section>
 
       {/* Testimonials */}
       <section id="testimonials" className="py-20 px-4 sm:px-6 lg:px-8 bg-background">
