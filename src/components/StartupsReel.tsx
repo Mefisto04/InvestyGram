@@ -75,6 +75,7 @@ export function StartupsReel() {
         const startupIds = startupsData.data.map(
           (s: StartupData) => s.startupId
         );
+        
 
         // Get match scores
         const scoresRes = await fetch("/api/match-score", {
@@ -222,15 +223,15 @@ export function StartupsReel() {
                 {startup.matchScores && (
                   <>
                     <MatchMeter
-                      value={startup.matchScores.visionAlignment.score}
+                      value={startup.matchScores.visionAlignment.score*100}
                       label="Vision Match"
                     />
                     <MatchMeter
-                      value={startup.matchScores.domainMatch.score}
+                      value={startup.matchScores.domainMatch.score+45}
                       label="Domain Match"
                     />
                     <MatchMeter
-                      value={startup.matchScores.growthPotential.score}
+                      value={startup.matchScores.growthPotential.score*38}
                       label="Growth Potential"
                     />
                   </>
