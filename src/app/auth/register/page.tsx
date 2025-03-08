@@ -25,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
-import { CloudUpload, X } from "lucide-react";
+import { CloudUpload, X, Video } from "lucide-react";
 import Image from "next/image";
 import config from "@/lib/config";
 
@@ -34,6 +34,7 @@ export default function RegisterPage() {
   const [userType, setUserType] = useState<"startup" | "investor">("startup");
   const [loading, setLoading] = useState(false);
   const [uploadingImage, setUploadingImage] = useState(false);
+  const [uploadingVideo, setUploadingVideo] = useState(false);
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState({
     name: "",
@@ -49,7 +50,11 @@ export default function RegisterPage() {
       fileType: "",
       originalName: ""
     },
-    pitchVideo: "",
+    pitchVideo: {
+      url: "",
+      fileType: "",
+      originalName: ""
+    },
     socialProof: {
       instagramFollowers: 0,
     },
@@ -217,6 +222,65 @@ export default function RegisterPage() {
     setFormData(prev => ({
       ...prev,
       companyImage: {
+        url: "",
+        fileType: "",
+        originalName: ""
+      }
+    }));
+  };
+
+  const handleVideoUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = e.target.files;
+    if (!files || files.length === 0) return;
+
+    const file = files[0];
+    
+    // Check file size (100MB)
+    if (file.size > 100 * 1024 * 1024) {
+      toast.error("File size exceeds the maximum allowed size of 100MB");
+      return;
+    }
+    
+    try {
+      setUploadingVideo(true);
+      
+      const formData = new FormData();
+      formData.append('file', file);
+      
+      const response = await fetch('/api/upload/video', {
+        method: 'POST',
+        body: formData,
+      });
+      
+      if (!response.ok) {
+        const error = await response.json();
+        throw new Error(error.error || 'Upload failed');
+      }
+      
+      const result = await response.json();
+      
+      setFormData(prev => ({
+        ...prev,
+        pitchVideo: {
+          url: result.url,
+          fileType: result.fileType,
+          originalName: result.originalName
+        }
+      }));
+      
+      toast.success('Video uploaded successfully!');
+    } catch (error: any) {
+      toast.error(error.message || 'Failed to upload video');
+      console.error('Upload error:', error);
+    } finally {
+      setUploadingVideo(false);
+    }
+  };
+
+  const handleRemoveVideo = () => {
+    setFormData(prev => ({
+      ...prev,
+      pitchVideo: {
         url: "",
         fileType: "",
         originalName: ""
@@ -499,15 +563,50 @@ export default function RegisterPage() {
                   </div>
                 </div>
                 <div className="space-y-2">
-                  <Label htmlFor="pitchVideo">Pitch Video URL</Label>
-                  <Input
-                    id="pitchVideo"
-                    name="pitchVideo"
-                    type="text"
-                    placeholder="Enter pitch video URL"
-                    value={formData.pitchVideo}
-                    onChange={handleInputChange}
-                  />
+                  <Label htmlFor="pitchVideo">Pitch Video</Label>
+                  <div className="mt-2">
+                    {formData.pitchVideo.url ? (
+                      <div className="relative w-full bg-gray-100 rounded-md overflow-hidden">
+                        <video 
+                          src={formData.pitchVideo.url} 
+                          controls 
+                          className="w-full"
+                        />
+                        <button 
+                          type="button"
+                          onClick={handleRemoveVideo}
+                          className="absolute top-2 right-2 bg-red-500 text-white p-1 rounded-full hover:bg-red-600"
+                        >
+                          <X size={16} />
+                        </button>
+                        <p className="absolute bottom-2 left-2 text-xs bg-black bg-opacity-50 text-white px-2 py-1 rounded">
+                          {formData.pitchVideo.originalName}
+                        </p>
+                      </div>
+                    ) : (
+                      <div className="border-2 border-dashed border-gray-300 rounded-md p-6 flex flex-col items-center">
+                        <Video className="h-10 w-10 text-gray-400" />
+                        <label 
+                          htmlFor="pitch-video-upload"
+                          className="mt-2 cursor-pointer text-center"
+                        >
+                          <span className="mt-2 block text-sm font-medium text-gray-700">
+                            {uploadingVideo ? "Uploading..." : "Click to upload pitch video"}
+                          </span>
+                          <input
+                            id="pitch-video-upload"
+                            name="pitch-video-upload"
+                            type="file"
+                            accept="video/*"
+                            className="sr-only"
+                            onChange={handleVideoUpload}
+                            disabled={uploadingVideo}
+                          />
+                          <p className="text-xs text-gray-500">MP4, WebM, or OGG up to 100MB</p>
+                        </label>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="space-y-2">
                   <Label htmlFor="socialProof.instagramFollowers">
@@ -633,6 +732,7 @@ export default function RegisterPage() {
                         e.target.value
                       )
                     }
+                    
                   />
                 </div>
               </CardContent>

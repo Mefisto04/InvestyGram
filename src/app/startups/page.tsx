@@ -1,6 +1,8 @@
 "use client";
 
+import Footer from "@/components/Footer";
 import GetInvestor from "@/components/GetInvestor";
+import Navbar from "@/components/Navbar";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { 
@@ -16,6 +18,9 @@ import {
 
 export default function StartupPage() {
   return (
+    <>
+    <Navbar />
+    
     <div className="min-h-screen bg-gradient-to-b from-white to-gray-50">
       {/* Hero Section */}
       <GetInvestor/>
@@ -175,6 +180,8 @@ export default function StartupPage() {
         </div>
       </section>
     </div>
+    <Footer />
+    </>
   );
 }
 

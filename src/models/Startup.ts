@@ -17,7 +17,11 @@ export interface IStartup extends Document {
         originalName: string;
     };
 
-    pitchVideo: string;
+    pitchVideo: {
+        url: string;
+        fileType: string;
+        originalName: string;
+    };
     socialProof: {
         instagramFollowers: number;
     };
@@ -51,7 +55,12 @@ export const StartupSchema = new Schema<IStartup>(
             fileType: { type: String },
             originalName: { type: String }
         },
-        pitchVideo: { type: String },
+        pitchVideo: {
+            url: { type: String, default: "" },
+            fileType: { type: String, default: "" },
+            originalName: { type: String, default: "" }
+        },
+        
         socialProof: {
             instagramFollowers: { type: Number, default: 0 }
         },
@@ -87,7 +96,11 @@ export const StartupValidation = z.object({
         fileType: z.string(),
         originalName: z.string()
     }).optional(),
-    pitchVideo: z.string().optional(),
+    pitchVideo: z.object({
+        url: z.string().default(""),
+        fileType: z.string().default(""),
+        originalName: z.string().default("")
+    }).optional(),
     socialProof: z.object({
         instagramFollowers: z.number()
     }),
