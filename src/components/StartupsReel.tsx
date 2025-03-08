@@ -12,7 +12,6 @@ import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
 import { motion } from "framer-motion";
 import { MatchMeter } from "@/components/MatchMeter";
-import { IStartup } from "@/models/Startup";
 
 interface MatchScores {
   visionAlignment: { score: number; reason: string };
@@ -21,6 +20,7 @@ interface MatchScores {
 }
 
 interface StartupData {
+  startupId: string;
   companyImage: {
     url: string;
     fileType: string;
@@ -53,35 +53,59 @@ const gradientClasses = [
 export function StartupsReel() {
   const [startups, setStartups] = useState<StartupData[]>([]);
   const [loading, setLoading] = useState(true);
-  const [currentInvestorId] = useState("1");
 
-  // In your StartupsReel component
-  const fetchData = async () => {
-    try {
-      const investorId = localStorage.getItem("clientId");
-      if (!investorId) throw new Error("Investor not logged in");
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        setLoading(true);
+        const investorId = localStorage.getItem("InvestorId");
+        console.log("Client ID from storage:", investorId); // Add this line
 
-      // First get startup IDs
-      const startupsRes = await fetch("/api/startups");
-      const startupsData = await startupsRes.json();
+        if (!investorId) throw new Error("Investor not logged in");
 
-      if (startupsData.success) {
-        // Then get scores for all startups
+        // Fetch all startups
+        const startupsRes = await fetch("/api/startups");
+        const startupsData = await startupsRes.json();
+
+        if (!startupsData.success || !startupsData.data?.length) {
+          throw new Error("Failed to fetch startups");
+        }
+
+        // Extract startupIds from the response
+        const startupIds = startupsData.data.map(
+          (s: StartupData) => s.startupId
+        );
+
+        // Get match scores
         const scoresRes = await fetch("/api/match-score", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            investorId,
-            startupIds: startupsData.data, // array of ID strings
-          }),
+          body: JSON.stringify({ investorId, startupIds }),
         });
 
-        // ... handle response ...
+        const scoresData = await scoresRes.json();
+        if (!scoresData.success) {
+          throw new Error("Failed to fetch match scores");
+        }
+
+        // Merge scores with startup data
+        const mergedData = startupsData.data.map((startup: StartupData) => ({
+          ...startup,
+          matchScores: scoresData.data.find(
+            (s: any) => s.startupId === startup.startupId
+          )?.matchScores,
+        }));
+
+        setStartups(mergedData);
+      } catch (error) {
+        console.error("Error:", error);
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Error:", error);
-    }
-  };
+    };
+
+    fetchData();
+  }, []);
 
   useEffect(() => {
     const fetchStartups = async () => {
