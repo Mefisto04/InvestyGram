@@ -14,7 +14,6 @@ const InvestorTutorialSection = () => {
   const router = useRouter();
   return (
     <>
-    <Navbar />
       <section
         id="how-it-works"
         className="py-20 px-4 sm:px-6 lg:px-8 bg-background"
@@ -91,7 +90,6 @@ const InvestorTutorialSection = () => {
           
         </div>
       </section>
-      <Footer />
     </>
   );
 };

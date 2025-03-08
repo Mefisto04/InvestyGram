@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import {
   Card,
   CardHeader,
@@ -10,8 +11,9 @@ import {
 } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { Skeleton } from "@/components/ui/skeleton";
-import { motion } from "framer-motion";
+import { motion, useAnimation, PanInfo } from "framer-motion";
 import { MatchMeter } from "@/components/MatchMeter";
+import { Button } from "@/components/ui/button";
 
 interface MatchScores {
   visionAlignment: { score: number; reason: string };
@@ -22,6 +24,11 @@ interface MatchScores {
 interface StartupData {
   startupId: string;
   companyImage: {
+    url: string;
+    fileType: string;
+    originalName: string;
+  };
+  pitchVideo: {
     url: string;
     fileType: string;
     originalName: string;
@@ -51,8 +58,10 @@ const gradientClasses = [
 ];
 
 export function StartupsReel() {
+  const router = useRouter();
   const [startups, setStartups] = useState<StartupData[]>([]);
   const [loading, setLoading] = useState(true);
+  const [showPitchVideo, setShowPitchVideo] = useState<Record<string, boolean>>({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -75,7 +84,7 @@ export function StartupsReel() {
         const startupIds = startupsData.data.map(
           (s: StartupData) => s.startupId
         );
-        
+
 
         // Get match scores
         const scoresRes = await fetch("/api/match-score", {
@@ -146,11 +155,10 @@ export function StartupsReel() {
       transition={{ duration: 0.5 }}
     >
       {startups.map((startup, index) => (
-        <section key={index} className="h-full w-md snap-start snap-always p-4">
+        <section key={index} className="h-full w-xl snap-start snap-always p-4">
           <Card
-            className={`h-full w-full overflow-hidden relative ${
-              gradientClasses[index % gradientClasses.length]
-            }`}
+            className={`h-full w-full overflow-hidden relative ${gradientClasses[index % gradientClasses.length]
+              }`}
           >
             <CardHeader className="pb-2">
               <CardTitle className="text-3xl">{startup.name}</CardTitle>
@@ -161,21 +169,94 @@ export function StartupsReel() {
 
             <CardContent className="h-[60vh] flex flex-col gap-4">
               <div className="relative h-48 w-full rounded-xl overflow-hidden">
-                <img
-                  src={startup.companyImage?.url || ""}
-                  alt={startup.name}
-                  className="object-cover w-full h-full"
-                />
-                <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2">
-                  <div className="flex justify-between text-white text-sm">
-                    <span>🏷️ {startup.fundingInfo.currentRound}</span>
-                    <span>
-                      📸{" "}
-                      {startup.socialProof.instagramFollowers.toLocaleString()}{" "}
-                      followers
-                    </span>
-                  </div>
-                </div>
+                <motion.div
+                  initial={false}
+                  animate={{ opacity: 1 }}
+                  transition={{ duration: 0.3 }}
+                  className="w-full h-full"
+                >
+                  {showPitchVideo[startup.startupId] ? (
+                    // Show pitch video when button is clicked
+                    startup.pitchVideo?.url ? (
+                      <div className="relative w-full h-full">
+                        <video
+                          src={startup.pitchVideo.url}
+                          controls
+                          autoPlay
+                          className="object-cover w-full h-full"
+                        />
+                        <div className="absolute top-2 right-2 bg-black/70 text-white px-2 py-1 rounded-md text-xs">
+                          Pitch Video
+                        </div>
+                        {/* Button to go back to company image */}
+                        <button
+                          onClick={() => setShowPitchVideo(prev => ({
+                            ...prev,
+                            [startup.startupId]: false
+                          }))}
+                          className="absolute bottom-2 right-2 bg-primary text-white px-3 py-2 rounded-lg shadow-lg hover:bg-primary/80 transition-colors flex items-center gap-2"
+                          aria-label="Show company info"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M15 18l-6-6 6-6" />
+                          </svg>
+                          <span>Company Info</span>
+                        </button>
+                      </div>
+                    ) : (
+                      <div className="flex items-center justify-center h-full bg-gray-200">
+                        <p className="text-gray-500">No pitch video available</p>
+                        {/* Button to go back to company image */}
+                        <button
+                          onClick={() => setShowPitchVideo(prev => ({
+                            ...prev,
+                            [startup.startupId]: false
+                          }))}
+                          className="absolute bottom-2 right-2 bg-primary text-white px-3 py-2 rounded-lg shadow-lg hover:bg-primary/80 transition-colors flex items-center gap-2"
+                          aria-label="Show company info"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                            <path d="M15 18l-6-6 6-6" />
+                          </svg>
+                          <span>Company Info</span>
+                        </button>
+                      </div>
+                    )
+                  ) : (
+                    // Show company image by default
+                    <>
+                      <img
+                        src={startup.companyImage?.url || ""}
+                        alt={startup.name}
+                        className="object-cover w-full h-full"
+                      />
+                      <div className="absolute bottom-0 left-0 right-0 bg-black/50 p-2">
+                        <div className="flex justify-between text-white text-sm">
+                          <span>🏷️ {startup.fundingInfo.currentRound}</span>
+                          <span>
+                            📸{" "}
+                            {startup.socialProof.instagramFollowers.toLocaleString()}{" "}
+                            followers
+                          </span>
+                        </div>
+                      </div>
+                      {/* Button to show pitch video */}
+                      <button
+                        onClick={() => setShowPitchVideo(prev => ({
+                          ...prev,
+                          [startup.startupId]: true
+                        }))}
+                        className="absolute bottom-2 right-2 bg-primary text-white px-3 py-2 rounded-lg shadow-lg hover:bg-primary/80 transition-colors flex items-center gap-2"
+                        aria-label="Show pitch video"
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <polygon points="5 3 19 12 5 21 5 3"></polygon>
+                        </svg>
+                        <span>Watch Pitch</span>
+                      </button>
+                    </>
+                  )}
+                </motion.div>
               </div>
 
               <div className="space-y-2 flex-grow">
@@ -244,11 +325,25 @@ export function StartupsReel() {
                   <p>📈 {startup.matchScores.growthPotential.reason}</p>
                 </div>
               )}
+              <div className="text-center">
+                <Button 
+                  className="group" 
+                  onClick={() => {
+                    router.push(`/investor/discover/${startup.startupId}`);
+                  }}
+                >
+                  View Detailed Report
+                </Button>
+              </div>
             </CardContent>
 
             <CardFooter className="absolute bottom-0 w-full bg-background/80 border-t">
-              <div className="w-full text-center py-2 animate-pulse text-sm text-muted-foreground">
-                Swipe up for next opportunity ↓
+              <div className="w-full flex justify-center items-center py-2 text-sm text-muted-foreground">
+                {showPitchVideo[startup.startupId] ? (
+                  <span>Viewing pitch video</span>
+                ) : (
+                  <span>Click "Watch Pitch" to see the startup's pitch video</span>
+                )}
               </div>
             </CardFooter>
           </Card>

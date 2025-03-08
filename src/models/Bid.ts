@@ -23,22 +23,23 @@ export const BidSchema = new Schema<IBid>(
         status: {
             type: String,
             enum: ['pending', 'accepted', 'rejected'],
-            default: 'pending'
+            default: 'pending',
+            required: true
         },
         createdAt: { type: Date, default: Date.now }
     },
     { timestamps: true }
 );
 
-// export const Bid = mongoose.model<IBid>("Bid", BidSchema);
+export const Bid = mongoose.models.Bid || mongoose.model<IBid>("Bid", BidSchema);
 
 // Zod Validation
 export const BidValidation = z.object({
     startupId: z.string(),
     investorId: z.string(),
-    amount: z.number(),
-    equity: z.number(),
-    royalty: z.number(),
+    amount: z.number().positive("Amount must be positive"),
+    equity: z.number().min(0, "Equity cannot be negative").max(100, "Equity cannot exceed 100%"),
+    royalty: z.number().min(0, "Royalty cannot be negative").max(100, "Royalty cannot exceed 100%"),
     conditions: z.array(z.string()),
-    status: z.enum(['pending', 'accepted', 'rejected'])
+    status: z.enum(['pending', 'accepted', 'rejected']).default('pending')
 });
