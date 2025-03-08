@@ -3,7 +3,7 @@ import { Startup } from '@/models';
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { startupId: string } }
+  { params }: { params: Promise<{ startupId: string }> }
 ) {
   try {
     // Properly await the params destructuring

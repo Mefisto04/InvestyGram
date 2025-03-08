@@ -4,11 +4,11 @@ import { Bid } from "@/models";
 
 export async function GET(
   request: Request,
-  { params }: { params: { startupId: string } }
+  { params }: { params: Promise<{ startupId: string }> }
 ) {
   try {
     await connectDB();
-    const startupId = params.startupId;
+    const startupId = await params;
 
     // Find all bids for this startup
     const bids = await Bid.find({ startupId }).sort({ createdAt: -1 });
