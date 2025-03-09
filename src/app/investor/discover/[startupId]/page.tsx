@@ -12,6 +12,7 @@ import {
 import { Skeleton } from "@/components/ui/skeleton";
 import { MatchMeter } from "@/components/MatchMeter";
 import { Button } from "@/components/ui/button";
+import Footer from "@/components/Footer";
 
 interface StartupDetails {
   startupId: string;
@@ -99,6 +100,7 @@ export default function StartupReport() {
   }
 
   return (
+    <>
     <div className="container mx-auto p-6 space-y-6">
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {/* Company Overview */}
@@ -301,5 +303,7 @@ export default function StartupReport() {
         </Card>
       </div>
     </div>
+    <Footer />
+    </>
   );
 } 

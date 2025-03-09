@@ -46,6 +46,7 @@ import { toast } from "sonner";
 import { formatDistanceToNow } from "date-fns";
 import { Badge } from "@/components/ui/badge";
 import { Check, DollarSign, Percent, X, MessageSquare } from "lucide-react";
+import Footer from "@/components/Footer";
 
 interface Bid {
   _id: string;
@@ -376,7 +377,8 @@ function OffersTable({
   showActions = true
 }: OffersTableProps) {
   return (
-    <div className="rounded-md border">
+    <>
+    <div className="rounded-md border h-screen">
       <Table>
         <TableCaption>List of funding offers for your startup</TableCaption>
         <TableHeader>
@@ -514,5 +516,7 @@ function OffersTable({
         </TableBody>
       </Table>
     </div>
+    <Footer />
+    </>
   );
 }
