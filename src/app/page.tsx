@@ -1,5 +1,5 @@
 "use client"
-
+// import CustomLayout from "../customLanding"
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import Image from "next/image"
@@ -52,10 +52,9 @@ const LandingPage = () => {
   }
 
   return (
+    <>
+    {/* <CustomLayout> */}
     <div className="min-h-screen flex flex-col bg-background">
-
-
-
       {/* Hero Section */}
       <header className="relative pt-16 pb-24 overflow-hidden bg-gradient-to-br from-primary/90 to-purple-600 text-primary-foreground">
         <div className="absolute inset-0 bg-grid-white/[0.05] bg-[size:20px_20px]"></div>
@@ -77,11 +76,11 @@ const LandingPage = () => {
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
                 <Link href="/auth/register">
-                  <Button size="lg" className="bg-white text-primary hover:bg-white/90 w-full sm:w-auto">
+                  <Button size="lg" className="bg-green-300 text-primary hover:bg-green-300/70 w-full sm:w-auto">
                     Get Started
                   </Button>
                 </Link>
-                <Link href="#how-it-works">
+                {/* <Link href="#how-it-works">
                   <Button
                     size="lg"
                     variant="outline"
@@ -89,7 +88,7 @@ const LandingPage = () => {
                   >
                     See How It Works
                   </Button>
-                </Link>
+                </Link> */}
               </div>
 
               <div className="text-sm opacity-80 pt-2">Invest Today, Empower Tomorrow – Your Future Starts Here.</div>
@@ -98,7 +97,7 @@ const LandingPage = () => {
             <div className="hidden md:block relative">
               <div className="relative bg-white/10 backdrop-blur-sm rounded-lg shadow-2xl border border-white/20 p-2 transform rotate-1 hover:rotate-0 transition-transform duration-500">
                 <Image
-                  src="/logo2.png"
+                  src="/logo4.jpg"
                   width={800}
                   height={600}
                   alt="FileShare Dashboard"
@@ -539,6 +538,8 @@ const LandingPage = () => {
       <Footer />
       <ChatBot />
     </div>
+    {/* </CustomLayout> */}
+    </>
   )
 }
 

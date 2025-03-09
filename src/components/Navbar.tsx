@@ -139,17 +139,9 @@
 //     }
 //   };
 
-//   const toggleMobileMenu = () => {
-//     setMobileMenuOpen(!mobileMenuOpen);
-//   };
+ 
 
-//   const formatCurrency = (amount: number) => {
-//     return new Intl.NumberFormat('en-US', {
-//       style: 'currency',
-//       currency: 'USD',
-//       maximumFractionDigits: 0
-//     }).format(amount);
-//   };
+  
 
 //   // Don't render the navbar on auth pages
 //   if (pathname?.startsWith("/auth")) {
@@ -476,23 +468,22 @@ export default function Navbar() {
   const [latestRejectedBid, setLatestRejectedBid] = useState<Bid | null>(null);
 
   useEffect(() => {
-    // Check if we're on an auth page
-    const isAuthPage = pathname?.startsWith("/auth");
-    setIsAuthenticated(!isAuthPage);
-
     // Get user type and name from localStorage
     const startupId = localStorage.getItem("StartupId");
     const investorId = localStorage.getItem("InvestorId");
-    setUserType(startupId ? "startup" : investorId ? "investor" : null);
 
-    // For now, we'll just use a placeholder name
+    setUserType(startupId ? "startup" : investorId ? "investor" : null);
     setUserName(localStorage.getItem("userName") || "User");
+
+    // Check if the user is logged in (but allow "/" to always show the navbar)
+    const isAuthPage = pathname?.startsWith("/auth");
+    setIsAuthenticated(!!startupId || !!investorId);
 
     // Add scroll listener
     const handleScroll = () => setIsScrolled(window.scrollY > 50);
     window.addEventListener("scroll", handleScroll);
 
-    // Fetch rejected bids for investors
+    // Fetch rejected bids if user is an investor and not on auth pages
     if (investorId && !isAuthPage) {
       fetchRejectedBids(investorId);
     }
@@ -500,6 +491,13 @@ export default function Navbar() {
     return () => window.removeEventListener("scroll", handleScroll);
   }, [pathname]);
 
+  const formatCurrency = (amount: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: 'USD',
+      maximumFractionDigits: 0
+    }).format(amount);
+  };
   const fetchRejectedBids = async (investorId: string) => {
     try {
       const response = await fetch(`/api/bids/investor/${investorId}/rejected`);
@@ -535,20 +533,8 @@ export default function Navbar() {
       console.error("Error fetching rejected bids:", error);
     }
   };
-
-  const markNotificationsAsRead = () => {
-    const viewedNotifications = JSON.parse(
-      localStorage.getItem("viewedNotifications") || "[]"
-    );
-    const newViewedNotifications = [
-      ...viewedNotifications,
-      ...rejectedBids.map((bid) => bid._id),
-    ];
-    localStorage.setItem(
-      "viewedNotifications",
-      JSON.stringify(newViewedNotifications)
-    );
-    setUnreadCount(0);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   const handleLogout = async () => {
@@ -575,20 +561,8 @@ export default function Navbar() {
     }
   };
 
-  const toggleMobileMenu = () => {
-    setMobileMenuOpen(!mobileMenuOpen);
-  };
-
-  const formatCurrency = (amount: number) => {
-    return new Intl.NumberFormat("en-US", {
-      style: "currency",
-      currency: "USD",
-      maximumFractionDigits: 0,
-    }).format(amount);
-  };
-
-  // Don't render the navbar on auth pages
-  if (pathname?.startsWith("/auth")) {
+  // Hide navbar on auth pages, except the homepage ("/")
+  if (pathname?.startsWith("/auth") && pathname !== "/") {
     return null;
   }
 
@@ -613,7 +587,8 @@ export default function Navbar() {
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex items-center space-x-8">
-            {!isAuthenticated ? (
+            {/* Show normal navbar on "/" page */}
+            {!isAuthenticated || pathname === "/" ? (
               <>
                 <Link
                   href="#startup-flow"
@@ -653,123 +628,19 @@ export default function Navbar() {
                 {/* Add routes based on userType */}
                 {userType === "startup" && (
                   <>
-                    <Link
-                      href="/startups"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Home
-                    </Link>
-                    <Link
-                      href="/startups/liveFunding"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Live Funding
-                    </Link>
+                    <Link href="/startups">Home</Link>
+                    <Link href="/startups/liveFunding">Live Funding</Link>
                   </>
                 )}
                 {userType === "investor" && (
                   <>
-                    <Link
-                      href="/investor"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Home
-                    </Link>
-                    <Link
-                      href="/investor/discover"
-                      className="text-muted-foreground hover:text-foreground transition-colors"
-                    >
-                      Discover
-                    </Link>
+                    <Link href="/investor">Home</Link>
+                    <Link href="/investor/discover">Discover</Link>
                   </>
                 )}
-
-                {userType === "investor" && (
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button variant="ghost" size="icon" className="relative">
-                        <Bell className="h-5 w-5" />
-                        {unreadCount > 0 && (
-                          <Badge
-                            className="absolute -top-1 -right-1 px-1.5 py-0.5 min-w-[18px] h-[18px] flex items-center justify-center rounded-full"
-                            variant="destructive"
-                          >
-                            {unreadCount}
-                          </Badge>
-                        )}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-80 p-0" align="end">
-                      <div className="p-4 border-b">
-                        <div className="font-medium">Notifications</div>
-                        <div className="text-xs text-muted-foreground">
-                          Updates about your investment offers
-                        </div>
-                      </div>
-
-                      <div className="max-h-80 overflow-auto">
-                        {rejectedBids.length === 0 ? (
-                          <div className="p-4 text-center text-sm text-muted-foreground">
-                            No notifications
-                          </div>
-                        ) : (
-                          rejectedBids.map((bid) => (
-                            <div
-                              key={bid._id}
-                              className="p-4 border-b last:border-0 hover:bg-muted/50"
-                            >
-                              <div className="flex items-start gap-4">
-                                <div className="flex-1">
-                                  <p className="text-sm font-medium">
-                                    <span className="text-destructive">
-                                      Offer Rejected
-                                    </span>{" "}
-                                    by {bid.startupName || "Startup"}
-                                  </p>
-                                  <p className="text-xs text-muted-foreground mt-1">
-                                    {formatCurrency(bid.amount)} for{" "}
-                                    {bid.equity}% equity
-                                  </p>
-                                  <p className="text-xs text-muted-foreground mt-1">
-                                    {formatDistanceToNow(
-                                      new Date(bid.updatedAt || bid.createdAt),
-                                      { addSuffix: true }
-                                    )}
-                                  </p>
-                                </div>
-                              </div>
-                            </div>
-                          ))
-                        )}
-                      </div>
-
-                      <div className="p-2 border-t">
-                        <Button
-                          variant="outline"
-                          className="w-full text-xs"
-                          size="sm"
-                          onClick={() => router.push("/investor/my-bids")}
-                        >
-                          View All Bids
-                          <ExternalLink className="ml-2 h-3 w-3" />
-                        </Button>
-                      </div>
-                    </PopoverContent>
-                  </Popover>
-                )}
-
-                <DropdownMenu
-                  onOpenChange={(open) => {
-                    if (open && userType === "investor") {
-                      markNotificationsAsRead();
-                    }
-                  }}
-                >
+                <DropdownMenu>
                   <DropdownMenuTrigger asChild>
-                    <Button
-                      variant="ghost"
-                      className="relative h-8 w-8 rounded-full"
-                    >
+                    <Button variant="ghost" className="relative h-8 w-8">
                       <Avatar className="h-8 w-8">
                         <AvatarFallback>
                           {userName
@@ -781,16 +652,12 @@ export default function Navbar() {
                       </Avatar>
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="w-56" align="end" forceMount>
-                    <DropdownMenuLabel className="font-normal">
-                      <div className="flex flex-col space-y-1">
-                        <p className="text-sm font-medium leading-none">
-                          {userName}
-                        </p>
-                        <p className="text-xs leading-none text-muted-foreground">
-                          {userType === "startup" ? "Startup" : "Investor"}
-                        </p>
-                      </div>
+                  <DropdownMenuContent className="w-56" align="end">
+                    <DropdownMenuLabel>
+                      <p className="text-sm font-medium">{userName}</p>
+                      <p className="text-xs text-muted-foreground">
+                        {userType === "startup" ? "Startup" : "Investor"}
+                      </p>
                     </DropdownMenuLabel>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem onClick={() => router.push("/profile")}>

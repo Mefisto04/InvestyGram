@@ -3,8 +3,9 @@ import type { NextRequest } from "next/server";
 import { jwtVerify } from "jose";
 
 export async function middleware(request: NextRequest) {
-    // Skip middleware for auth pages and API routes
+    // Allow public access to the home page ("/"), auth pages, and API auth routes
     if (
+        request.nextUrl.pathname === "/" ||
         request.nextUrl.pathname.startsWith("/auth") ||
         request.nextUrl.pathname.startsWith("/api/auth")
     ) {
@@ -28,4 +29,4 @@ export async function middleware(request: NextRequest) {
 
 export const config = {
     matcher: ["/((?!_next/static|_next/image|favicon.ico).*)"],
-}; 
+};
