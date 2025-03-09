@@ -13,6 +13,18 @@ import { Skeleton } from "@/components/ui/skeleton";
 import { MatchMeter } from "@/components/MatchMeter";
 import { Button } from "@/components/ui/button";
 import Footer from "@/components/Footer";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { StarIcon } from "lucide-react";
 
 interface StartupDetails {
   startupId: string;
@@ -57,6 +69,12 @@ export default function StartupReport() {
   const params = useParams();
   const [startup, setStartup] = useState<StartupDetails | null>(null);
   const [loading, setLoading] = useState(true);
+  const [feedbackOpen, setFeedbackOpen] = useState(false);
+  const [feedbackData, setFeedbackData] = useState({
+    rating: 0,
+    comment: "",
+  });
+  const [submitting, setSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchStartupDetails = async () => {
@@ -81,6 +99,41 @@ export default function StartupReport() {
       fetchStartupDetails();
     }
   }, [params.startupId]);
+
+  const handleFeedbackSubmit = async () => {
+    if (!startup) return;
+    
+    try {
+      setSubmitting(true);
+      
+      // Here you would implement the API call to submit feedback
+      const response = await fetch(`/api/startups/${params.startupId}/feedback`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          startupId: startup.startupId,
+          rating: feedbackData.rating,
+          comment: feedbackData.comment,
+        }),
+      });
+      
+      const data = await response.json();
+      
+      if (data.success) {
+        // Close dialog and show success message
+        setFeedbackOpen(false);
+        // You could add a toast notification here
+      } else {
+        console.error("Failed to submit feedback:", data.error);
+      }
+    } catch (error) {
+      console.error("Error submitting feedback:", error);
+    } finally {
+      setSubmitting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -282,10 +335,7 @@ export default function StartupReport() {
                 variant="outline" 
                 size="lg"
                 className="w-[200px] text-lg font-semibold"
-                onClick={() => {
-                  // Feedback functionality to be implemented
-                  console.log("Feedback clicked");
-                }}
+                onClick={() => setFeedbackOpen(true)}
               >
                 Give Feedback
               </Button>
@@ -303,6 +353,96 @@ export default function StartupReport() {
         </Card>
       </div>
     </div>
+
+    {/* Feedback Dialog */}
+    <Dialog open={feedbackOpen} onOpenChange={setFeedbackOpen}>
+      <DialogContent className="sm:max-w-[500px]">
+        <DialogHeader>
+          <DialogTitle>Provide Feedback</DialogTitle>
+          <DialogDescription>
+            Share your thoughts about {startup?.name}
+          </DialogDescription>
+        </DialogHeader>
+        
+        <div className="space-y-4 py-4">
+          {/* Startup Info */}
+          <div className="bg-muted/50 p-4 rounded-lg">
+            <div className="grid grid-cols-2 gap-2">
+              <div>
+                <Label className="text-xs text-muted-foreground">Startup</Label>
+                <p className="font-medium">{startup?.name}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Domain</Label>
+                <p className="font-medium">{startup?.domain}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Email</Label>
+                <p className="font-medium">{startup?.email}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Capital</Label>
+                <p className="font-medium">${startup?.capital.toLocaleString()}</p>
+              </div>
+              <div>
+                <Label className="text-xs text-muted-foreground">Current Round</Label>
+                <p className="font-medium">{startup?.fundingInfo.currentRound}</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Rating */}
+          <div>
+            <Label htmlFor="rating">Rating</Label>
+            <div className="flex items-center gap-1 mt-2">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <button
+                  key={star}
+                  type="button"
+                  onClick={() => setFeedbackData({...feedbackData, rating: star})}
+                  className={`p-1 rounded-full transition-colors ${
+                    feedbackData.rating >= star 
+                      ? "text-yellow-500 hover:text-yellow-600" 
+                      : "text-gray-300 hover:text-yellow-400"
+                  }`}
+                >
+                  <StarIcon className="h-8 w-8 fill-current" />
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Feedback Comment */}
+          <div>
+            <Label htmlFor="comment">Your Feedback</Label>
+            <Textarea
+              id="comment"
+              placeholder="Share your thoughts about this startup..."
+              className="mt-2"
+              rows={5}
+              value={feedbackData.comment}
+              onChange={(e) => setFeedbackData({...feedbackData, comment: e.target.value})}
+            />
+          </div>
+        </div>
+        
+        <DialogFooter>
+          <Button 
+            variant="outline" 
+            onClick={() => setFeedbackOpen(false)}
+          >
+            Cancel
+          </Button>
+          <Button 
+            // onClick={handleFeedbackSubmit}
+            disabled={feedbackData.rating === 0 || !feedbackData.comment || submitting}
+          >
+            {submitting ? "Submitting..." : "Submit Feedback"}
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+    
     <Footer />
     </>
   );
