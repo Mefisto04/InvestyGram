@@ -13,9 +13,7 @@ InvestyGram also incorporates a ranking and scoring system that evaluates startu
 ### 🎯 For Startups:
 - Register with detailed business information 📋
 - Upload pitch videos & supporting documents 🎥
-- Connect with investors via direct messages 📩
 - Participate in live funding rounds 💰
-- Gain market analysis & insights 📊
 - Get a startup profile score based on vision, ROI, and AOI ✅
 
 ### 🏦 For Investors:
@@ -23,9 +21,6 @@ InvestyGram also incorporates a ranking and scoring system that evaluates startu
 - View startup details, growth projections & funding history 📈
 - Watch pitch videos & provide feedback 📝
 - Engage in live funding bids with real-time offers 🔄
-- Use chat options to directly communicate with startups 💬
-- Receive weekly leaderboards & market insights 📊
-
 
 ---
 
