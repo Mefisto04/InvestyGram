@@ -113,7 +113,7 @@ const Footer = () => {
           </div>
 
           <div className="pt-8 mt-8 border-t border-border flex flex-col md:flex-row justify-between items-center">
-            <p className="text-sm">© 2025 FileShare. All rights reserved.</p>
+            <p className="text-sm">© 2025 InvestyGram. All rights reserved.</p>
             <div className="flex space-x-6 mt-4 md:mt-0 text-sm">
               <Link href="#" className="hover:text-foreground transition-colors">
                 Privacy Policy
