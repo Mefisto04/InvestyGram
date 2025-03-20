@@ -4,15 +4,6 @@
 // import { useRouter, usePathname } from "next/navigation";
 // import { Button } from "@/components/ui/button";
 // import { toast } from "sonner";
-// import { useEffect, useState } from "react";
-// import {
-//   DropdownMenu,
-//   DropdownMenuContent,
-//   DropdownMenuItem,
-//   DropdownMenuLabel,
-//   DropdownMenuSeparator,
-//   DropdownMenuTrigger,
-// } from "@/components/ui/dropdown-menu";
 // import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 // import { User, Menu, X, UploadCloud, Bell, ExternalLink } from "lucide-react";
 // import {
