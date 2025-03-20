@@ -5,6 +5,7 @@ import { GoogleGenerativeAI } from "@google/generative-ai";
 import { Button } from "@/components/ui/button";
 import { Loader2, MessageCircle, X, Trash2 } from "lucide-react";
 
+
 type Message = {
   text: string;
   sender: "user" | "bot";
