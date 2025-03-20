@@ -4,6 +4,7 @@ InvestyGram is an innovative platform that bridges the gap between startups and 
 
 The platform operates with a dynamic "Reel-style" scrolling system, allowing investors to browse through startup profiles seamlessly. Startups can showcase their business through pitch videos, financial data, and growth metrics, while investors can offer funding directly via the platform. Real-time investment offers with royalty/equity options ensure transparency and competitive funding opportunities. 
 
+
 InvestyGram also incorporates a ranking and scoring system that evaluates startups based on vision, return on investment (ROI), and area of interest (AOI), ensuring that only high-potential startups gain visibility. Additionally, features like investor-startup direct messaging, market analysis, and weekly leaderboards enhance decision-making and engagement.
 
 ---
