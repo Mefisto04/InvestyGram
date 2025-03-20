@@ -49,6 +49,7 @@
     "uuid": "^11.1.0",
     "zod": "^3.24.2"
   },
+  
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/gridfs-stream": "^0.5.39",
