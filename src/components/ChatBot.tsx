@@ -11,6 +11,7 @@ type Message = {
   sender: "user" | "bot";
   timestamp: string;
 };
+// hello
 
 const ChatBot = () => {
   const [isOpen, setIsOpen] = useState(false);
