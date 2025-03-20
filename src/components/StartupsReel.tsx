@@ -21,6 +21,7 @@ interface MatchScores {
   growthPotential: { score: number; reason: string };
 }
 
+
 interface StartupData {
   startupId: string;
   companyImage: {
